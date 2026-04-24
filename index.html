@@ -38,7 +38,7 @@
         <div id="welcome-screen" class="fade-in">
             <div class="text-center mb-10">
                 <h2 class="text-3xl font-black text-slate-800 mb-2">Pilih Materi Latihan</h2>
-                <p class="text-slate-500 italic">Data diambil dari Bank Soal Puspresnas (Geologi, Iklim, Bencana, dll)</p>
+                <p class="text-slate-500 italic">Data dikompilasi dari 6 Bank Soal Master Puspresnas</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="category-list">
@@ -91,7 +91,7 @@
             </div>
 
             <div class="space-y-4">
-                <h3 class="font-black text-slate-700 uppercase tracking-widest text-sm ml-2">Detail Pembahasan (Sesuai PDF)</h3>
+                <h3 class="font-black text-slate-700 uppercase tracking-widest text-sm ml-2">Detail Pembahasan (Berdasarkan Modul Puspresnas)</h3>
                 <div id="review-section" class="space-y-4"></div>
             </div>
         </div>
@@ -103,55 +103,56 @@
                 title: "Iklim & Perubahan Iklim",
                 icon: "M3 15a4 4 0 110-8 4 4 0 010 8z M15 8V7a3 3 0 00-3-3h-1m-4 10V15a3 3 0 013-3h1",
                 questions: [
-                    { tanya: "Aktivitas pembakaran bahan bakar fosil dan penebangan hutan memengaruhi perubahan iklim dengan cara...", opsi: ["Membantu meningkatkan kadar oksigen di udara", "Membuat gas rumah kaca di atmosfer berkurang", "Menambah jumlah CO2 sehingga memperkuat efek rumah kaca", "Menjadikan pola cuaca dunia semakin stabil", "Mempercepat proses fotosintesis di lautan"], kunci: 2, bahas: "Pembakaran fosil melepaskan CO2, sementara penebangan hutan menghilangkan penyerap karbon alami. Hal ini memperkuat efek 'selimut' di atmosfer." },
-                    { tanya: "Peningkatan kadar CO2 di laut akan memengaruhi kondisi fisiologis terumbu karang dalam bentuk...", opsi: ["Pertumbuhan karang jadi lebih cepat", "Pemutihan (bleaching) karena suhu air laut naik", "Menambah jumlah ikan di terumbu karang", "Mengurangi kadar oksigen secara drastis", "Memperkuat struktur kalsium karang"], kunci: 1, bahas: "Suhu panas menyebabkan stres pada karang sehingga mengeluarkan alga simbiotik (Zooxanthellae) yang memberi warna, menyebabkan pemutihan." },
-                    { tanya: "Target utama Paris Agreement yang disepakati lebih dari 190 negara adalah menahan kenaikan suhu global di bawah...", opsi: ["1,0°C", "1,5°C", "2,0°C", "2,5°C", "3,0°C"], kunci: 1, bahas: "Paris Agreement menargetkan penahanan suhu global agar tidak melewati ambang batas 1,5 derajat Celcius untuk mencegah bencana iklim." }
+                    { tanya: "Aktivitas pembakaran bahan bakar fosil dan penebangan hutan memengaruhi perubahan iklim dengan cara...", opsi: ["Membantu meningkatkan kadar oksigen di udara", "Membuat gas rumah kaca di atmosfer berkurang", "Menambah jumlah CO2 sehingga memperkuat efek rumah kaca", "Menjadikan pola cuaca dunia semakin stabil", "Mempercepat proses fotosintesis di lautan"], kunci: 2, bahas: "Pembakaran fosil melepaskan CO2, sementara penebangan hutan menghilangkan penyerap karbon alami. Hal ini memperkuat efek 'selimut' di atmosfer yang memerangkap panas matahari." },
+                    { tanya: "Peningkatan kadar CO2 di laut akan memengaruhi kondisi fisiologis terumbu karang dalam bentuk...", opsi: ["Pertumbuhan karang jadi lebih cepat", "Pemutihan (bleaching) karena suhu air laut naik", "Menambah jumlah ikan di terumbu karang", "Mengurangi kadar oksigen secara drastis", "Memperkuat struktur kalsium karang"], kunci: 1, bahas: "Suhu panas menyebabkan stres pada karang sehingga mengeluarkan alga simbiotik (Zooxanthellae). Tanpa alga ini, karang menjadi putih (bleaching), lemah, dan bisa mati." },
+                    { tanya: "Target utama Paris Agreement yang disepakati lebih dari 190 negara adalah menahan kenaikan suhu global di bawah...", opsi: ["1,0°C", "1,5°C", "2,0°C", "2,5°C", "3,0°C"], kunci: 1, bahas: "Paris Agreement menargetkan penahanan suhu global agar tidak melewati ambang batas 1,5°C melalui aksi nyata transisi energi dan konservasi hutan." }
                 ]
             },
             "geologi": {
                 title: "Geologi & Geomorfologi",
                 icon: "M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4",
                 questions: [
-                    { tanya: "Palung Mariana terbentuk karena Lempeng Pasifik...", opsi: ["Naik ke atas Lempeng Filipina", "Naik ke atas Lempeng Indo-Australia", "Menunjam ke bawah Lempeng Filipina", "Menunjam ke bawah Lempeng Indo-Australia", "Menunjam ke bawah Lempeng Eurasia"], kunci: 2, bahas: "Lempeng Samudra (SiMa) yang lebih berat menunjam ke bawah lempeng yang lebih ringan (Subduksi) membentuk palung." },
-                    { tanya: "Lempeng Samudra (SiMa) lebih berat daripada Lempeng Benua (SiAl) karena mengandung banyak...", opsi: ["Alumunium", "Magnesium", "Kalsium", "Tembaga", "Perak"], kunci: 1, bahas: "SiMa (Silikat Magnesium) memiliki densitas lebih tinggi daripada SiAl (Silikat Alumunium)." },
-                    { tanya: "Morfologi sungai yang berkelok-kelok tajam secara teratur melalui dataran banjir disebut...", opsi: ["Anastomosing", "Braided River", "Sungai Kelok Banyak", "Meandering", "Sungai U"], kunci: 3, bahas: "Meandering terbentuk karena proses erosi dan sedimentasi yang berkelanjutan pada dataran rendah." },
-                    { tanya: "Lingkungan pengendapan di ujung sungai tempat sungai masuk ke laut disebut...", opsi: ["Dataran Banjir", "Anak Sungai", "Daerah Aliran Sungai", "Delta", "Spit"], kunci: 3, bahas: "Delta terbentuk saat kecepatan aliran sungai menurun drastis di muara sehingga sedimen mengendap." }
+                    { tanya: "Palung Mariana terbentuk karena Lempeng Pasifik...", opsi: ["Naik ke atas Lempeng Filipina", "Naik ke atas Lempeng Indo-Australia", "Menunjam ke bawah Lempeng Filipina", "Menunjam ke bawah Lempeng Indo-Australia", "Menunjam ke bawah Lempeng Eurasia"], kunci: 2, bahas: "Lempeng Pasifik (Lempeng Samudra Tua/Berat) menunjam ke bawah Lempeng Filipina (Lempeng Muda/Ringan). Zona tubrukan ini disebut Subduksi." },
+                    { tanya: "Lempeng Samudra (SiMa) lebih berat daripada Lempeng Benua (SiAl) karena mengandung banyak...", opsi: ["Alumunium", "Magnesium", "Kalsium", "Tembaga", "Perak"], kunci: 1, bahas: "Lempeng Samudra kaya akan Silikat Magnesium (SiMa) yang densitasnya lebih tinggi dibandingkan Silikat Alumunium (SiAl) pada Lempeng Benua." },
+                    { tanya: "Morfologi sungai yang berkelok-kelok tajam secara teratur melalui dataran banjir disebut...", opsi: ["Anastomosing", "Braided River", "Sungai Kelok Banyak", "Meandering", "Sungai U"], kunci: 3, bahas: "Meandering adalah pola sungai berkelok tajam akibat proses erosi di sisi luar (cut bank) dan sedimentasi di sisi dalam (point bar) yang berkelanjutan." },
+                    { tanya: "Lingkungan pengendapan di muara sungai tempat sungai masuk ke laut disebut...", opsi: ["Dataran Banjir", "Anak Sungai", "Daerah Aliran Sungai", "Delta", "Spit"], kunci: 3, bahas: "Saat kecepatan aliran sungai menurun drastis di muara, sedimen mengendap membentuk daratan baru yang sering bercabang-cabang, disebut Delta." }
                 ]
             },
             "bencana": {
                 title: "Manajemen Bencana",
                 icon: "M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z",
                 questions: [
-                    { tanya: "Tipe gerakan tanah dengan kejenuhan air paling tinggi (paling basah) adalah...", opsi: ["Soil Creep", "Slump", "Mudflow", "Rockfall", "Topples"], kunci: 2, bahas: "Mudflow (aliran lumpur) memiliki kadar air sangat tinggi sehingga material mengalir seperti cairan kental." },
-                    { tanya: "Fenomena tanah kehilangan kekuatan dan berubah seperti cairan akibat guncangan gempa disebut...", opsi: ["Erosi", "Likuifaksi", "Abrasi", "Subsiden", "Deflasi"], kunci: 1, bahas: "Likuifaksi terjadi pada tanah berpasir jenuh air saat terkena guncangan hebat (misal: Gempa Palu)." },
-                    { tanya: "Unsur kapasitas finansial dalam mitigasi bencana ditunjukkan oleh...", opsi: ["EWS", "Peta Risiko", "Akses terhadap dana pinjaman mitigasi", "Kurikulum Sekolah", "Rencana Darurat"], kunci: 2, bahas: "Kapasitas finansial berkaitan dengan ketersediaan dana darurat, asuransi, atau akses modal pemulihan." }
+                    { tanya: "Tipe gerakan tanah dengan kejenuhan air paling tinggi (paling basah) adalah...", opsi: ["Soil Creep", "Slump", "Mudflow", "Rockfall", "Topples"], kunci: 2, bahas: "Mudflow (aliran lumpur) memiliki kadar air sangat tinggi sehingga material mengalir seperti cairan kental. Soil creep adalah yang paling lambat dan kering." },
+                    { tanya: "Fenomena tanah kehilangan kekuatan dan berubah seperti cairan akibat guncangan gempa disebut...", opsi: ["Erosi", "Likuifaksi", "Abrasi", "Subsiden", "Deflasi"], kunci: 1, bahas: "Likuifaksi terjadi pada tanah berpasir jenuh air atau bekas rawa. Guncangan gempa membuat butiran tanah terlepas dari kontaknya dan 'mengapung' dalam air." },
+                    { tanya: "Salah satu upaya mengurangi risiko bencana likuifaksi yang tepat adalah...", opsi: ["Memperkuat dinding bangunan", "Membangun rumah atap ringan", "Membangun di wilayah bekas rawa", "Memetakan wilayah bekas rawa", "Memperbaiki jalan melintasi rawa"], kunci: 3, bahas: "Memetakan wilayah bekas rawa/sungai sangat penting karena wilayah tersebut memiliki risiko likuifaksi tertinggi saat gempa terjadi." },
+                    { tanya: "Unsur kapasitas finansial dalam mitigasi bencana ditunjukkan oleh...", opsi: ["EWS", "Peta Risiko", "Akses terhadap dana pinjaman mitigasi", "Kurikulum Sekolah", "Rencana Darurat"], kunci: 2, bahas: "Kapasitas finansial berkaitan dengan ketersediaan dana darurat, asuransi bencana, atau akses modal untuk pemulihan ekonomi." }
                 ]
             },
             "sumberdaya": {
                 title: "Sumber Daya Alam",
                 icon: "M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h14a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z",
                 questions: [
-                    { tanya: "Pasangan sumber daya alam renewable dan non-renewable yang tepat adalah...", opsi: ["Nuklir; Minyak Bumi", "Surya; Panas Bumi", "Gas Alam; Air", "Angin; Gas Alam", "Biomassa; Panas Bumi"], kunci: 3, bahas: "Angin dapat diperbaharui, sementara Gas Alam adalah energi fosil yang akan habis." },
-                    { tanya: "Rasio elektrifikasi adalah...", opsi: ["Jumlah daya listrik nasional", "Persentase rumah tangga dengan akses listrik", "Jumlah gardu listrik daerah", "Biaya tagihan rata-rata", "Produksi batubara PLTU"], kunci: 1, bahas: "Rasio ini mengukur sejauh mana pemerataan akses listrik menjangkau seluruh penduduk di suatu wilayah." },
-                    { tanya: "Faktor fisik lokasi yang paling ideal untuk PLTA adalah...", opsi: ["Topografi datar", "Curah hujan rendah", "Topografi curam & curah hujan tinggi", "Dekat pusat kota saja", "Pengaruh musim hujan saja"], kunci: 2, bahas: "PLTA butuh beda tinggi (topografi curam) dan debit air yang stabil (curah hujan tinggi)." }
+                    { tanya: "Pasangan sumber daya alam renewable dan non-renewable yang tepat adalah...", opsi: ["Nuklir; Minyak Bumi", "Surya; Panas Bumi", "Gas Alam; Air", "Angin; Gas Alam", "Biomassa; Panas Bumi"], kunci: 3, bahas: "Angin (renewable) selalu ada selama atmosfer ada, sedangkan Gas Alam (non-renewable) terbentuk dari fosil jutaan tahun lalu dan jumlahnya terbatas." },
+                    { tanya: "Rasio elektrifikasi adalah perbandingan antara...", opsi: ["Jumlah daya listrik nasional", "Jumlah rumah tangga dengan akses listrik vs total rumah tangga", "Jumlah gardu listrik daerah", "Biaya tagihan rata-rata", "Produksi batubara PLTU"], kunci: 1, bahas: "Rasio elektrifikasi menunjukkan sejauh mana pemerataan akses listrik menjangkau seluruh penduduk di suatu wilayah (biasanya dalam persen)." },
+                    { tanya: "Lokasi paling ideal untuk pembangunan PLTA memerlukan faktor fisik berupa...", opsi: ["Topografi datar", "Curah hujan rendah", "Topografi curam & curah hujan tinggi", "Dekat pusat kota", "Pengaruh musim hujan saja"], kunci: 2, bahas: "PLTA membutuhkan beda tinggi (head) dari topografi curam dan debit air yang stabil/besar dari curah hujan tinggi." }
                 ]
             },
             "lingkungan": {
                 title: "Lingkungan & Pembangunan",
                 icon: "M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z",
                 questions: [
-                    { tanya: "Kadar kontaminasi Kadmium (Cd) sebesar 200 ppm berarti...", opsi: ["200 kali ambang batas", "200 ml dalam 1000 mg", "200 mg dalam 1 ml", "200 gram dalam 1 liter", "200 mg dalam 1000 ml (1 liter)"], kunci: 4, bahas: "1 ppm (Part Per Million) setara dengan 1 mg zat terlarut dalam 1 liter (1000 ml) air." },
-                    { tanya: "Skenario masa depan di mana ketimpangan ekstrem menyebabkan kaum kaya memagari diri dengan militer sementara luar benteng kacau disebut...", opsi: ["Market Forces", "Eco-communalism", "Fortress World", "Great Transitions", "Balanced Growth"], kunci: 2, bahas: "Fortress World adalah skenario distopia di mana pembangunan gagal mencapai keadilan sosial." },
-                    { tanya: "Skenario Market Forces menganggap masalah lingkungan akan selesai sendiri melalui...", opsi: ["Hukum adat", "Pertanian tradisional", "Teknologi dan mekanisme pasar", "Pemerataan populasi", "Pengurangan konsumsi"], kunci: 2, bahas: "Market Forces fokus pada pertumbuhan GDP dan percaya pasar akan mengoreksi diri sendiri." }
+                    { tanya: "Jika Amir menemukan kadar Kadmium (Cd) di sungai sebesar 200 ppm, artinya...", opsi: ["200 kali ambang batas", "200 ml dalam 1000 mg air", "200 mg dalam 1 ml air", "200 gram dalam 1 liter air", "200 mg dalam 1000 ml (1 liter) air"], kunci: 4, bahas: "1 ppm (Part Per Million) setara dengan 1 mg zat dalam 1 Liter (1000 ml) air. Jadi 200 ppm berarti ada 200 mg polutan di setiap liternya." },
+                    { tanya: "Skenario 'Fortress World' menggambarkan kondisi masa depan di mana...", opsi: ["Ekonomi stabil dan merata", "Manusia fokus pada kualitas hidup", "Ketimpangan ekstrem; si kaya memagari diri dengan militer", "Masalah lingkungan selesai oleh teknologi", "Populasi berkurang drastis"], kunci: 2, bahas: "Fortress World (Dunia Benteng) adalah skenario distopia di mana pembangunan gagal mencapai keadilan; kekacauan terjadi di luar benteng sementara elit terisolasi di dalam." },
+                    { tanya: "Skenario 'Market Forces' mengandalkan penyelesaian masalah lingkungan melalui...", opsi: ["Hukum adat", "Pertanian tradisional", "Teknologi dan mekanisme pasar", "Pemerataan populasi", "Pengurangan konsumsi"], kunci: 2, bahas: "Market Forces fokus pada pertumbuhan GDP dan percaya bahwa teknologi serta mekanisme pasar akan mengoreksi masalah lingkungan secara otomatis." }
                 ]
             },
             "pertanian": {
                 title: "Pertanian & Pangan",
                 icon: "M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253",
                 questions: [
-                    { tanya: "Perbedaan signifikan antara Revolusi Hijau dan Revolusi Industri 4.0 adalah...", opsi: ["Hanya 4.0 yang meningkatkan produksi", "Revolusi Hijau meningkatkan produksi tapi berdampak lingkungan signifikan", "4.0 tidak menggunakan AI", "Hijau lebih efisien teknologi", "Keduanya tidak ada hubungan"], kunci: 1, bahas: "Revolusi Hijau fokus pada bibit unggul & kimia, sementara 4.0 fokus pada efisiensi lewat IoT/AI." },
-                    { tanya: "Tantangan utama dari sistem pertanian sawah (lahan basah) adalah...", opsi: ["Minim tenaga kerja", "Ketergantungan irigasi & risiko kekeringan", "Pupuk kimia terlalu murah", "Kurang bibit padi", "Tidak bisa pakai traktor"], kunci: 1, bahas: "Sawah butuh genangan air mutlak; jika irigasi rusak atau kemarau panjang, risiko gagal panen (puso) sangat tinggi." },
-                    { tanya: "Fenomena gagal panen padi yang biasanya disebabkan kekeringan atau hama masif disebut...", opsi: ["Fuso", "Erosi", "Likuifaksi", "Pencemaran", "Infiltrasi"], kunci: 0, bahas: "Puso adalah istilah untuk kondisi tanaman padi yang tidak menghasilkan bulir sama sekali." }
+                    { tanya: "Pernyataan yang tepat mengenai Revolusi Hijau (1960-2000) dan Revolusi Industri 4.0 adalah...", opsi: ["Revolusi Hijau tidak menaikkan produksi", "Revolusi Hijau meningkatkan produksi tapi berdampak lingkungan signifikan", "Revolusi 4.0 menurunkan efisiensi", "Keduanya tidak menggunakan teknologi", "Revolusi 4.0 berdampak lingkungan lebih buruk"], kunci: 1, bahas: "Revolusi Hijau fokus pada bibit unggul & kimia yang menaikkan produksi namun merusak ekosistem. Revolusi 4.0 berupaya memperbaiki efisiensi lewat AI/IoT." },
+                    { tanya: "Tantangan utama dari sistem pertanian sawah (lahan basah) dibandingkan lahan kering adalah...", opsi: ["Minim tenaga kerja", "Kebutuhan air mutlak & risiko kerusakan irigasi", "Pupuk kimia terlalu murah", "Kurang bibit padi", "Tidak bisa mekanisasi"], kunci: 1, bahas: "Sawah sangat bergantung pada genangan air. Jika saluran irigasi rusak atau terjadi kemarau panjang, risiko gagal panen (puso) sangat tinggi." },
+                    { tanya: "Istilah untuk kondisi tanaman padi yang tidak menghasilkan bulir sama sekali akibat kekeringan atau hama disebut...", opsi: ["Puso", "Erosi", "Likuifaksi", "Pencemaran", "Infiltrasi"], kunci: 0, bahas: "Puso adalah kegagalan panen total di mana tanaman tidak menghasilkan hasil ekonomi (bulir padi) sama sekali." }
                 ]
             }
         };
@@ -175,7 +176,7 @@
                         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${cat.icon}"></path></svg>
                     </div>
                     <h3 class="text-lg font-bold text-slate-800">${cat.title}</h3>
-                    <p class="text-xs text-slate-400 mt-1 font-semibold uppercase tracking-tight">${cat.questions.length} Soal Master</p>
+                    <p class="text-xs text-slate-400 mt-1 font-semibold uppercase tracking-tight">${cat.questions.length} Soal Master Puspresnas</p>
                 `;
                 list.appendChild(card);
             }
@@ -303,7 +304,6 @@
             if(confirm("Yakin ingin keluar? Progres latihanmu akan hilang.")) location.reload(); 
         }
 
-        // Jalankan inisialisasi
         init();
     </script>
 </body>
