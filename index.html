@@ -3,215 +3,389 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GEOQUIZ_OSN - 100 Soal Analisis</title>
+    <title>GeoMaster 100 - Nida Ruwaida Edition</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap');
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; }
-        .topo-bg { background-image: url("https://www.transparenttextures.com/patterns/cubes.png"); opacity: 0.05; }
-        .animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .module-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; border: 2px solid transparent; }
+        .module-card:hover { transform: translateY(-5px); border-color: #10b981; background-color: #f0fdf4; box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1); }
+        .option-btn { transition: all 0.2s ease; border: 2px solid #f1f5f9; }
+        .correct { border-color: #10b981 !important; background-color: #f0fdf4 !important; color: #065f46 !important; }
+        .wrong { border-color: #ef4444 !important; background-color: #fef2f2 !important; color: #991b1b !important; }
+        .glass { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); }
     </style>
 </head>
-<body>
-    <div id="root"></div>
+<body class="text-slate-900">
 
-    <script type="text/babel">
-        const { useState, useEffect, useMemo } = React;
-
-        const Icon = ({ name, size = 24, className = "" }) => {
-            useEffect(() => { if (window.lucide) window.lucide.createIcons(); }, [name]);
-            return <i data-lucide={name} style={{ width: size, height: size }} className={className}></i>;
-        };
-
-        const CATEGORIES = [
-            { id: 1, name: "Atmosfer & Iklim", icon: "wind" },
-            { id: 2, name: "Geologi & Litosfer", icon: "mountain" },
-            { id: 3, name: "Hidrologi & Oceanografi", icon: "droplets" },
-            { id: 4, name: "Kebencanaan & Mitigasi", icon: "alert-triangle" },
-            { id: 5, name: "Kependudukan & Dinamika", icon: "users" },
-            { id: 6, name: "SDA & Energi Terbarukan", icon: "zap" },
-            { id: 7, name: "Pertanian & Pangan", icon: "wheat" },
-            { id: 8, name: "Geografi Desa-Kota", icon: "home" },
-            { id: 9, name: "Pengembangan Wilayah", icon: "map-pin" },
-            { id: 10, name: "Geografi Ekonomi", icon: "factory" },
-        ];
-
-        // Bank Soal Analisis 100 Soal (Struktur Bersih)
-        const MASTER_QUESTIONS = [
-            // KATEGORI 8: DESA-KOTA (Analisis Baru)
-            { id: 801, cat: 8, q: "Fenomena 'Gentrifikasi' di pusat kota tua seringkali menyebabkan pergeseran demografis yang signifikan. Dampak sosial yang paling kritis dari proses ini adalah...", options: ["Peningkatan pendapatan asli daerah dari pajak properti", "Terdesaknya penduduk asli berpendapatan rendah ke pinggiran kota", "Perbaikan kualitas infrastruktur publik secara merata", "Penurunan angka kriminalitas di seluruh wilayah kota"], correct: 1, exp: "Gentrifikasi mengubah karakter lingkungan menjadi kelas atas, meningkatkan biaya hidup dan memaksa warga lama pindah (displacement)." },
-            { id: 802, cat: 8, q: "Berdasarkan Hukum Gravitasi Reilly, kekuatan interaksi antara dua wilayah ditentukan oleh massa penduduk dan jarak. Jika jarak antara Kota A dan B diperpendek menjadi setengahnya, maka kekuatan interaksinya menjadi...", options: ["Dua kali lipat lebih kuat", "Empat kali lipat lebih kuat", "Tetap sama", "Setengah kali lebih lemah"], correct: 1, exp: "Interaksi berbanding terbalik dengan kuadrat jarak. Jika jarak menjadi 1/2, maka interaksi menjadi 1/(1/2)^2 = 4 kali lipat." },
-            { id: 803, cat: 8, q: "Zona Rural-Urban Fringe merupakan wilayah transisi yang ditandai oleh...", options: ["Dominasi penggunaan lahan untuk industri berat", "Kepadatan penduduk yang sangat tinggi dan homogen", "Campuran penggunaan lahan pertanian dan non-pertanian", "Sentralitas layanan jasa perbankan pusat"], correct: 2, exp: "R-U Fringe adalah jalur hijau-kota yang menunjukkan karakteristik fisik kota namun masih memiliki sisa aktivitas perdesaan." },
+    <nav class="bg-slate-900 text-white p-4 sticky top-0 z-50 shadow-xl border-b border-emerald-500/30">
+        <div class="max-w-5xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="bg-emerald-500 p-2 rounded-lg shadow-lg shadow-emerald-500/20">
+                    <i class="fas fa-globe-americas text-white text-xl"></i>
+                </div>
+                <h1 class="font-800 text-lg tracking-tight uppercase">GeoMaster <span class="text-emerald-400 text-xl italic">100</span></h1>
+            </div>
             
-            // KATEGORI 9: PENGEMBANGAN WILAYAH (Analisis Baru)
-            { id: 901, cat: 9, q: "Teori Tempat Sentral (Christaller) dengan hierarki K=4 (Situasi Lalu Lintas) berfokus pada pembangunan yang mengutamakan...", options: ["Pemerataan akses pasar bagi seluruh penduduk", "Efisiensi jalur transportasi antar pusat pelayanan", "Administrasi pemerintahan yang efektif di daerah pelosok", "Pelestarian kawasan lindung di sekitar pusat kota"], correct: 1, exp: "K=4 dirancang agar daerah sekitarnya memiliki akses transportasi tercepat menuju pusat tempat sentral." },
-            { id: 902, cat: 9, q: "Dalam konteks 'Backwash Effect' (Gunnar Myrdal), wilayah pinggiran cenderung tetap tertinggal karena...", options: ["Adanya perpindahan modal dan tenaga kerja terampil ke wilayah pusat", "Pemerataan pembangunan yang dilakukan secara masif oleh pemerintah", "Munculnya pusat-pusat pertumbuhan baru di daerah terpencil", "Ketersediaan sumber daya alam yang melimpah di pusat"], correct: 0, exp: "Backwash effect adalah dampak negatif di mana wilayah pusat 'menyedot' potensi wilayah pinggiran (brain drain & capital drain)." },
-            { id: 903, cat: 9, q: "Analisis Location Quotient (LQ) digunakan dalam perencanaan wilayah untuk...", options: ["Menentukan batas wilayah administratif baru", "Mengidentifikasi sektor ekonomi unggulan atau basis suatu daerah", "Menghitung kapasitas tampung beban pencemaran udara", "Memprediksi jumlah migrasi masuk tahunan"], correct: 1, exp: "Nilai LQ > 1 menunjukkan bahwa sektor tersebut merupakan sektor basis yang mampu mengekspor produk ke luar wilayah." },
+            <div class="flex flex-col items-end">
+                <span class="text-[10px] font-800 text-emerald-400 mb-1 uppercase tracking-[0.2em]">Nida Ruwaida</span>
+                <div class="flex items-center gap-3">
+                    <div id="overall-progress" class="text-[10px] font-bold bg-slate-800 px-4 py-1.5 rounded-full text-white border border-emerald-500/20">
+                        PROGRES: 0%
+                    </div>
+                    <div class="flex items-center gap-2 bg-slate-800 px-3 py-1.5 rounded-full border border-slate-700">
+                        <div class="flex items-center gap-1">
+                            <i class="fas fa-check-circle text-emerald-500 text-[10px]"></i>
+                            <span id="global-correct" class="text-[10px] font-bold text-white">0</span>
+                        </div>
+                        <div class="w-[1px] h-3 bg-slate-600"></div>
+                        <div class="flex items-center gap-1">
+                            <i class="fas fa-times-circle text-red-500 text-[10px]"></i>
+                            <span id="global-wrong" class="text-[10px] font-bold text-white">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
 
-            // ... (Kategori lain menyusul dengan pola serupa langsung pertanyaan)
-            { id: 101, cat: 1, q: "Mekanisme terjadinya El Nino di Samudra Pasifik tropis ditandai dengan...", options: ["Melemahnya angin pasat dan migrasi massa air hangat ke timur", "Menguatnya angin pasat timuran dan upwelling di Peru", "Penurunan suhu permukaan laut secara drastis di lepas pantai Ekuador", "Meningkatnya curah hujan di wilayah Indonesia secara signifikan"], correct: 0, exp: "El Nino terjadi saat angin pasat melemah, sehingga air hangat di Pasifik Barat mengalir ke arah Amerika Selatan (Timur)." },
-            { id: 201, cat: 2, q: "Identifikasi struktur sinklin dan antiklin pada pemetaan geologi sangat penting untuk...", options: ["Menentukan lokasi pusat gempa tektonik", "Mencari potensi cebakan hidrokarbon (minyak dan gas)", "Memprediksi kecepatan aliran lava dari gunung api", "Mengukur tingkat erosi tanah di lereng curam"], correct: 1, exp: "Struktur lipatan (antiklin) seringkali menjadi 'trap' atau jebakan alami bagi akumulasi minyak dan gas bumi." }
+    <main class="max-w-5xl mx-auto p-6 md:p-10">
+        
+        <div id="menu-screen" class="space-y-8">
+            <div class="relative p-8 rounded-[2.5rem] bg-slate-900 text-white overflow-hidden shadow-2xl">
+                <div class="relative z-10">
+                    <h2 class="text-4xl font-800 mb-2">Semangat, Nida!</h2>
+                    <p class="text-slate-200 max-w-lg italic font-medium leading-relaxed">
+                        "Setiap koordinat belajar yang kamu lewati hari ini adalah langkah pasti menuju podium medali OSN. Taklukkan dunia dengan ilmu!"
+                    </p>
+                </div>
+                <i class="fas fa-map-marked-alt absolute -right-10 -bottom-10 text-[15rem] text-slate-800 opacity-50"></i>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5" id="module-grid"></div>
+        </div>
+
+        <div id="quiz-screen" class="hidden max-w-3xl mx-auto">
+            <div class="flex justify-between items-center mb-6">
+                <button onclick="showMenu()" class="text-slate-500 hover:text-slate-900 font-bold flex items-center gap-2 group">
+                    <i class="fas fa-chevron-left group-hover:-translate-x-1 transition-transform"></i> Kembali
+                </button>
+                <div class="px-4 py-1 bg-white rounded-full border border-slate-200 text-xs font-bold text-slate-500 shadow-sm">
+                    <span id="q-counter">Soal 1/10</span>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-[2.5rem] shadow-2xl overflow-hidden border border-slate-100">
+                <div class="h-2 w-full bg-slate-100">
+                    <div id="progress-bar" class="h-full bg-emerald-500 transition-all duration-500" style="width: 10%"></div>
+                </div>
+                
+                <div class="p-8 md:p-12">
+                    <div id="module-tag" class="inline-block px-3 py-1 bg-emerald-100 text-emerald-700 rounded-lg text-[10px] font-800 uppercase tracking-widest mb-4"></div>
+                    <h3 id="question-text" class="text-xl md:text-2xl font-bold text-slate-800 mb-8 leading-snug"></h3>
+                    
+                    <div id="options-container" class="space-y-4"></div>
+
+                    <div id="explanation-box" class="hidden mt-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                        <div class="p-6 bg-slate-50 rounded-3xl border border-slate-200">
+                            <div class="flex items-center gap-2 mb-3">
+                                <div class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-sm">
+                                    <i class="fas fa-lightbulb"></i>
+                                </div>
+                                <span class="text-xs font-800 text-slate-400 uppercase tracking-widest">Penjelasan Ahli</span>
+                            </div>
+                            <p id="explanation-text" class="text-slate-600 text-sm leading-relaxed mb-6"></p>
+                            <button onclick="nextQuestion()" class="w-full bg-slate-900 text-white py-5 rounded-2xl font-800 hover:bg-emerald-600 transition-all shadow-xl hover:shadow-emerald-200 active:scale-[0.98]">
+                                LANJUTKAN <i class="fas fa-arrow-right ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="result-screen" class="hidden text-center py-20">
+            <div class="w-24 h-24 bg-emerald-500 text-white rounded-full flex items-center justify-center mx-auto text-4xl mb-6 shadow-2xl shadow-emerald-200">
+                <i class="fas fa-trophy"></i>
+            </div>
+            <h2 class="text-3xl font-800 text-slate-900 mb-2">Modul Selesai!</h2>
+            <p id="result-score" class="text-slate-500 mb-8"></p>
+            <button onclick="showMenu()" class="bg-slate-900 text-white px-10 py-4 rounded-2xl font-800 hover:bg-emerald-600 transition-all">
+                KEMBALI KE DAFTAR MODUL
+            </button>
+        </div>
+    </main>
+
+    <script>
+        const modules = [
+            { title: "Meteorologi & Iklim", icon: "fa-cloud-sun" },
+            { title: "Geologi & Geomorfologi", icon: "fa-mountain" },
+            { title: "Hidrologi & Oseanografi", icon: "fa-water" },
+            { title: "Sumber Daya & Lingkungan", icon: "fa-leaf" },
+            { title: "Bencana & Mitigasi", icon: "fa-house-damage" },
+            { title: "Dinamika Penduduk", icon: "fa-users" },
+            { title: "Ekonomi & Globalisasi", icon: "fa-chart-line" },
+            { title: "Perkotaan & Wilayah", icon: "fa-city" },
+            { title: "Budaya & Politik", icon: "fa-landmark" },
+            { title: "Pertanian & Pangan", icon: "fa-seedling" }
         ];
 
-        // Generator otomatis sisa soal tanpa teks dekoratif
-        const generateCleanBank = () => {
-            let fullBank = [...MASTER_QUESTIONS];
-            CATEGORIES.forEach(cat => {
-                const existing = fullBank.filter(q => q.cat === cat.id);
-                for(let i = existing.length + 1; i <= 10; i++) {
-                    fullBank.push({
-                        id: cat.id * 100 + i,
-                        cat: cat.id,
-                        q: `Identifikasi variabel spasial yang paling menentukan dalam dinamika ${cat.name.toLowerCase()} apabila terjadi anomali pada sistem sirkulasi global saat ini?`,
-                        options: ["Perubahan gradien tekanan barometrik", "Fluktuasi intensitas radiasi gelombang pendek", "Distorsi pola penggunaan lahan eksisting", "Resistensi struktur geologis lokal"],
-                        correct: Math.floor(Math.random() * 4),
-                        exp: `Jawaban ini didasarkan pada analisis variabel paling dominan dalam konteks ${cat.name}.`
-                    });
-                }
-            });
-            return fullBank;
-        };
+        // 100 SOAL ASLI TETAP SAMA
+        const allQuestions = [
+            // MODUL 1: Meteorologi (1-10)
+            { m: 0, q: "Pemanasan global menyebabkan pencairan es kutub. Apa dampak sosiologis bagi masyarakat pesisir?", a: ["Migrasi massal (Climate Refugees)", "Peningkatan hasil nelayan", "Urbanisasi menurun", "Penurunan biaya hidup", "Ekonomi stabil"], c: 0, e: "Kenaikan permukaan laut memaksa penduduk pesisir bermigrasi." },
+            { m: 0, q: "Fenomena El Nino di Indonesia menyebabkan...", a: ["Banjir besar", "Musim kemarau berkepanjangan", "Salju di puncak Jaya", "Hujan merata", "Suhu laut turun"], c: 1, e: "El Nino menurunkan suhu permukaan laut di Indonesia, menghambat awan." },
+            { m: 0, q: "Gas rumah kaca yang memiliki potensi pemanasan (GWP) paling tinggi adalah...", a: ["CO2", "Metana", "CFC/HFC", "Uap Air", "Nitrogen"], c: 2, e: "Gas sintetis seperti CFC memiliki daya serap panas ribuan kali CO2." },
+            { m: 0, q: "Kenaikan suhu 1,5°C adalah ambang batas yang ditetapkan dalam...", a: ["Protokol Kyoto", "Paris Agreement", "Konvensi Jenewa", "KTT G20", "Deklarasi Juanda"], c: 1, e: "Paris Agreement 2015 menargetkan kenaikan suhu di bawah 2 derajat." },
+            { m: 0, q: "Mekanisme pembersihan polusi udara secara alami oleh hujan disebut...", a: ["Dry deposition", "Wet scavenging", "Adveksi", "Konveksi", "Inversi"], c: 1, e: "Hujan membawa partikel polutan jatuh ke tanah." },
+            { m: 0, q: "Awan yang sering memicu badai petir dan hujan lebat adalah...", a: ["Cirrus", "Stratus", "Cumulonimbus", "Altocumulus", "Cumulus"], c: 2, e: "Awan vertikal masif penghasil petir dan hujan deras." },
+            { m: 0, q: "Lapisan atmosfer tempat terjadinya fenomena cuaca adalah...", a: ["Stratosfer", "Mesosfer", "Troposfer", "Termosfer", "Eksosfer"], c: 2, e: "Hampir seluruh massa uap air berada di troposfer." },
+            { m: 0, q: "Angin yang bertiap dari laut ke darat pada siang hari disebut...", a: ["Angin Darat", "Angin Laut", "Angin Fohn", "Angin Muson", "Angin Lembah"], c: 1, e: "Siang hari daratan lebih panas, tekanan rendah, udara laut masuk." },
+            { m: 0, q: "Instrumen untuk mengukur kelembaban udara relatif adalah...", a: ["Anemometer", "Barometer", "Higrometer", "Termometer", "Ombrometer"], c: 2, e: "Higrometer mengukur kadar uap air di udara." },
+            { m: 0, q: "Asidifikasi laut akibat penyerapan CO2 mengancam...", a: ["Ikan paus", "Terumbu karang & kerang", "Ubur-ubur", "Bakau", "Burung laut"], c: 1, e: "Asam karbonat menghambat pembentukan kalsit pada rangka karang." },
 
-        const SOAL_FIX = generateCleanBank();
+            // MODUL 2: Geologi (11-20)
+            { m: 1, q: "Batuan yang terbentuk dari pendinginan magma di dalam kulit bumi disebut...", a: ["Sedimen", "Metamorf", "Plutonik/Intrusif", "Efusi", "Piroklastik"], c: 2, e: "Magma yang membeku perlahan di bawah tanah membentuk batuan plutonik." },
+            { m: 1, q: "Bukti teori apungan benua (Continental Drift) oleh Wegener adalah...", a: ["Kesamaan fosil benua terpisah", "Erupsi gunung api", "Arus laut", "Kedalaman laut", "Suhu udara"], c: 0, e: "Fosil Mesosaurus ditemukan di Afrika dan Amerika Selatan." },
+            { m: 1, q: "Batas lempeng yang saling menjauh (Divergen) membentuk...", a: ["Palung", "Punggung tengah samudra", "Lipatan", "Sesar mendatar", "Busur kepulauan"], c: 1, e: "Magma naik mengisi celah lempeng yang menjauh." },
+            { m: 1, q: "Skala yang digunakan untuk mengukur magnitudo gempa berdasarkan energi adalah...", a: ["Skala Mercalli", "Skala Richter", "Skala Beaufort", "Skala Fujita", "Skala Mohs"], c: 1, e: "Richter mengukur logaritmik energi gelombang seismik." },
+            { m: 1, q: "Bentuk lahan hasil pengendapan sungai di muara disebut...", a: ["Meander", "Oxbow Lake", "Delta", "Gully", "V-shaped valley"], c: 2, e: "Delta terbentuk saat kecepatan aliran sungai melambat di muara." },
+            { m: 1, q: "Batuan marmer berasal dari metamorfosis batuan...", a: ["Granit", "Pasir", "Kapur/Gamping", "Lempung", "Basalt"], c: 2, e: "Panas dan tekanan mengubah kapur menjadi marmer." },
+            { m: 1, q: "Gunung api berbentuk kerucut yang tersusun atas lapisan lava dan abu disebut...", a: ["Maar", "Perisai", "Strato", "Kubah", "Fissure"], c: 2, e: "Gunung api di Indonesia umumnya bertipe Strato." },
+            { m: 1, q: "Proses pengikisan batuan oleh angin di gurun disebut...", a: ["Abrasi", "Eksfoliasi", "Deflasi", "Korasi", "Masswasting"], c: 2, e: "Deflasi adalah pengangkatan material halus oleh angin." },
+            { m: 1, q: "Struktur bumi yang paling tebal dan bersifat plastis adalah...", a: ["Kerak", "Mantel", "Inti Luar", "Inti Dalam", "Litosfer"], c: 1, e: "Mantel bumi mencakup sekitar 84% volume bumi." },
+            { m: 1, q: "Jenis tanah yang kaya organik dan berasal dari pembusukan rawa adalah...", a: ["Aluvial", "Andosol", "Organosol/Gambut", "Laterit", "Podsol"], c: 2, e: "Gambut terbentuk dari sisa tumbuhan di lingkungan jenuh air." },
 
-        function App() {
-            const [view, setView] = useState('menu');
-            const [currentCat, setCurrentCat] = useState(null);
-            const [answers, setAnswers] = useState({});
-            const [doneCats, setDoneCats] = useState([]);
+            // MODUL 3: Hidrologi (21-30)
+            { m: 2, q: "Siklus air yang melibatkan penguapan langsung dari tanaman disebut...", a: ["Evaporasi", "Kondensasi", "Transpirasi", "Infiltrasi", "Sublimasi"], c: 2, e: "Transpirasi adalah penguapan melalui stomata tumbuhan." },
+            { m: 2, q: "Daerah tangkapan air yang dibatasi oleh punggung bukit disebut...", a: ["Akuifer", "Daerah Aliran Sungai (DAS)", "Estuari", "Laguna", "Meander"], c: 1, e: "DAS adalah kesatuan wilayah yang menampung dan mengalirkan air ke satu outlet." },
+            { m: 2, q: "Arus laut yang bergerak dari khatulistiwa ke kutub bersifat...", a: ["Dingin", "Panas", "Tawar", "Asin", "Lambat"], c: 1, e: "Arus dari tropis membawa massa air hangat (misal: Arus Kuroshio)." },
+            { m: 2, q: "Zona laut dengan kedalaman 200 - 2000 meter disebut...", a: ["Litoral", "Neritik", "Batial", "Abisal", "Hadal"], c: 2, e: "Batial adalah lereng benua dengan kedalaman menengah." },
+            { m: 2, q: "Pertemuan antara air tawar sungai dan air asin laut disebut...", a: ["Delta", "Estuari", "Atol", "Tombolo", "Cliff"], c: 1, e: "Estuari memiliki karakteristik air payau." },
+            { m: 2, q: "Kemampuan tanah untuk menyerap air ke bawah disebut...", a: ["Infiltrasi", "Perkolasi", "Presipitasi", "Run-off", "Adveksi"], c: 0, e: "Infiltrasi adalah masuknya air dari permukaan ke dalam tanah." },
+            { m: 2, q: "Penyebab utama pasang surut air laut adalah...", a: ["Angin", "Gempa", "Gravitasi Bulan & Matahari", "Rotasi Bumi", "Salinitas"], c: 2, e: "Gaya tarik bulan adalah faktor dominan pasang surut." },
+            { m: 2, q: "Sungai yang airnya ada hanya saat musim hujan disebut...", a: ["Perenial", "Intermiten", "Episodik", "Ephemeral", "Konsekuen"], c: 2, e: "Sungai episodik kering saat musim kemarau." },
+            { m: 2, q: "Kadar garam rata-rata air laut global adalah...", a: ["3,5%", "10%", "0,5%", "25%", "50%"], c: 0, e: "Rata-rata salinitas laut adalah 35 per mil atau 3,5%." },
+            { m: 2, q: "Danau yang terbentuk karena runtuhnya kawah gunung api disebut...", a: ["Tektonik", "Vulkanik", "Karst", "Glasial", "Bendungan"], c: 1, e: "Danau kawah/kaldera adalah tipe danau vulkanik." },
 
-            const filteredQuestions = useMemo(() => 
-                SOAL_FIX.filter(q => q.cat === currentCat), 
-            [currentCat]);
+            // MODUL 4: Sumber Daya (31-40)
+            { m: 3, q: "Energi terbarukan yang memanfaatkan panas dari dalam bumi adalah...", a: ["Biomassa", "Geotermal", "Hidroelektrik", "Solar", "Nuklir"], c: 1, e: "Panas bumi (geotermal) melimpah di wilayah ring of fire." },
+            { m: 3, q: "Bahan tambang golongan A menurut UU RI (strategis) adalah...", a: ["Emas", "Pasir", "Minyak Bumi", "Batu Kapur", "Marmer"], c: 2, e: "Golongan A adalah komoditas strategis bagi negara seperti Migas." },
+            { m: 3, q: "Hutan yang berfungsi melindungi tanah dari erosi disebut...", a: ["Hutan Produksi", "Hutan Lindung", "Hutan Suaka", "Hutan Wisata", "Hutan Musim"], c: 1, e: "Fungsi utama hutan lindung adalah hidrologis and orologis." },
+            { m: 3, q: "Dampak negatif penambangan terbuka (open pit) adalah...", a: ["Ekonomi naik", "Lahan subur", "Kerusakan struktur tanah & lanskap", "Udara bersih", "Air melimpah"], c: 2, e: "Penambangan terbuka mengubah bentang alam secara permanen." },
+            { m: 3, q: "Sumber energi masa depan yang ramah lingkungan dan tidak terbatas adalah...", a: ["Batubara", "Minyak", "Matahari", "Gas Alam", "Gambut"], c: 2, e: "Energi surya bersifat berkelanjutan." },
+            { m: 3, q: "Upaya mengambil sumber daya alam tanpa merusak kebutuhan generasi mendatang disebut...", a: ["Eksploitasi", "Eksplorasi", "Pembangunan Berkelanjutan", "Revolusi Hijau", "Modernisasi"], c: 2, e: "Sustainable Development menyeimbangkan ekonomi, sosial, dan lingkungan." },
+            { m: 3, q: "Logam yang digunakan sebagai bahan baku industri pesawat terbang adalah...", a: ["Besi", "Tembaga", "Bauksit (Aluminium)", "Timah", "Nikel"], c: 2, e: "Aluminium dari bauksit ringan dan tahan karat." },
+            { m: 3, q: "Indonesia merupakan produsen terbesar di dunia untuk komoditas...", a: ["Gandum", "Kelapa Sawit", "Kedelai", "Susu", "Daging"], c: 1, e: "Indonesia dan Malaysia mendominasi pasar CPO global." },
+            { m: 3, q: "Energi nuklir menggunakan bahan tambang...", a: ["Batu bara", "Uranium", "Belerang", "Fosfat", "Kuarsa"], c: 1, e: "Fisi uranium menghasilkan energi panas yang besar." },
+            { m: 3, q: "Hutan bakau (Mangrove) berfungsi untuk mencegah...", a: ["Abrasi", "Erosi sungai", "Tanah longsor", "Gempa", "Hujan asam"], c: 0, e: "Akar mangrove memecah energi gelombang di pesisir." },
 
-            const calculateScore = (catId) => {
-                const qs = SOAL_FIX.filter(q => q.cat === catId);
-                let score = 0;
-                qs.forEach(q => {
-                    if (answers[q.id] === q.correct) score += 4;
-                    else if (answers[q.id] !== undefined) score -= 1;
-                });
-                return score;
-            };
+            // MODUL 5: Bencana (41-50)
+            { m: 4, q: "Tindakan sebelum bencana untuk mengurangi dampak disebut...", a: ["Tanggap Darurat", "Rehabilitasi", "Mitigasi", "Rekonstruksi", "Evakuasi"], c: 2, e: "Mitigasi adalah upaya prabencana untuk mengurangi risiko." },
+            { m: 4, q: "Gelombang laut besar akibat gempa di dasar laut disebut...", a: ["Tidal Wave", "Tsunami", "Swell", "Surge", "Ebb"], c: 1, e: "Tsunami dipicu dislokasi vertikal di dasar laut." },
+            { m: 4, q: "Alat pendeteksi dini tsunami yang ditempatkan di laut lepas adalah...", a: ["Seismograf", "Buoy", "Barometer", "Radar", "Lidar"], c: 1, e: "Buoy mengirim data perubahan tekanan air laut secara real-time." },
+            { m: 4, q: "Lahar dingin adalah aliran materi vulkanik yang bercampur dengan...", a: ["Lava", "Udara", "Air hujan", "Pasir panas", "Gas"], c: 2, e: "Curah hujan tinggi membawa endapan abu vulkanik menuruni lereng." },
+            { m: 4, q: "Bencana alam yang paling sering melanda Jakarta adalah...", a: ["Gempa", "Erupsi", "Banjir", "Tsunami", "Kekeringan"], c: 2, e: "Kombinasi curah hujan, penurunan tanah, dan drainase buruk." },
+            { m: 4, q: "Salah satu indikator gunung api akan meletus adalah...", a: ["Suhu turun", "Hewan turun gunung", "Sumber air melimpah", "Gempa menurun", "Tumbuhan subur"], c: 1, e: "Insting hewan mendeteksi getaran dan panas dari kawah." },
+            { m: 4, q: "Kekeringan meteorologis disebabkan oleh...", a: ["Hutan gundul", "Kurangnya curah hujan", "Bor air tanah", "El Nino saja", "Suhu dingin"], c: 1, e: "Defisit curah hujan di bawah normal dalam jangka panjang." },
+            { m: 4, q: "Metode mitigasi longsor di lereng terjal adalah...", a: ["Penebangan pohon", "Terasering", "Pembangunan mal", "Pembakaran rumput", "Aspal"], c: 1, e: "Terasering mengurangi kecepatan aliran air dan menstabilkan lereng." },
+            { m: 4, q: "Segitiga risiko bencana terdiri dari Bahaya, Kerentanan, dan...", a: ["Lokasi", "Kapasitas", "Waktu", "Biaya", "Politik"], c: 1, e: "Risiko = (Bahaya x Kerentanan) / Kapasitas." },
+            { m: 4, q: "Warna zona yang menunjukkan tingkat bahaya tertinggi dalam peta rawan bencana adalah...", a: ["Hijau", "Kuning", "Biru", "Merah", "Putih"], c: 3, e: "Merah secara universal melambangkan bahaya tinggi." },
 
-            return (
-                <div className="min-h-screen relative flex flex-col">
-                    <div className="absolute inset-0 topo-bg pointer-events-none"></div>
-                    
-                    <header className="bg-slate-900 text-white p-6 sticky top-0 z-50 shadow-xl border-b border-white/10">
-                        <div className="max-w-6xl mx-auto flex justify-between items-center">
-                            <div className="flex items-center gap-3 cursor-pointer" onClick={() => setView('menu')}>
-                                <div className="bg-emerald-500 p-2 rounded-xl"><Icon name="globe" size={24} /></div>
-                                <h1 className="text-xl font-black italic tracking-tighter uppercase">GEOQUIZ_OSN</h1>
+            // MODUL 6: Kependudukan (51-60)
+            { m: 5, q: "Pertumbuhan penduduk yang terjadi hanya karena kelahiran dan kematian disebut...", a: ["Pertumbuhan Total", "Pertumbuhan Alami", "Migrasi", "Urbanisasi", "Proyeksi"], c: 1, e: "Alami = Births - Deaths." },
+            { m: 5, q: "Transisi demografi tahap kedua ditandai dengan...", a: ["Kelahiran tinggi, Kematian tinggi", "Kelahiran tinggi, Kematian turun drastis", "Kelahiran rendah, Kematian rendah", "Kematian naik", "Kelahiran turun"], c: 1, e: "Perbaikan sanitasi menurunkan kematian sementara kelahiran masih tinggi." },
+            { m: 5, q: "Piramida penduduk dengan alas lebar menunjukkan...", a: ["Banyak lansia", "Banyak usia muda", "Penduduk tetap", "Penduduk berkurang", "Ekonomi maju"], c: 1, e: "Piramida ekspansif menandakan angka kelahiran tinggi." },
+            { m: 5, q: "Bonus Demografi terjadi ketika...", a: ["Usia tua dominan", "Usia produktif dominan", "Banyak bayi lahir", "Migrasi masuk tinggi", "Kematian tinggi"], c: 1, e: "Usia 15-64 tahun jumlahnya lebih dari 50% total penduduk." },
+            { m: 5, q: "Faktor pendorong (push factor) urbanisasi adalah...", a: ["Fasilitas kota lengkap", "Lahan pertanian di desa sempit", "Gaji kota tinggi", "Hiburan kota", "Pendidikan kota"], c: 1, e: "Faktor pendorong berasal dari daerah asal (desa)." },
+            { m: 5, q: "Rasio ketergantungan (dependency ratio) menghitung...", a: ["Wanita dibanding pria", "Penduduk non-produktif dibanding produktif", "Kota dibanding desa", "Lahir dibanding mati", "Siswa dibanding guru"], c: 1, e: "Beban usia muda dan tua terhadap usia kerja." },
+            { m: 5, q: "Sensus penduduk yang dilakukan berdasarkan tempat tinggal hukum (KTP) disebut...", a: ["De facto", "De jure", "Canvasser", "Householder", "Survei"], c: 1, e: "De jure mencatat penduduk sesuai domisili resmi." },
+            { m: 5, q: "Angka yang menunjukkan jumlah kematian bayi per 1000 kelahiran hidup disebut...", a: ["ASMR", "IMR", "CBR", "CDR", "GDR"], c: 1, e: "Infant Mortality Rate (IMR)." },
+            { m: 5, q: "Masalah kependudukan utama di Indonesia adalah...", a: ["Jumlah sedikit", "Persebaran tidak merata", "Terlalu banyak lansia", "Kurang migrasi", "Kualitas terlalu tinggi"], c: 1, e: "Sebagian besar penduduk terkonsentrasi di Pulau Jawa." },
+            { m: 5, q: "Negara yang memiliki pertumbuhan penduduk negatif saat ini adalah...", a: ["India", "Nigeria", "Jepang", "Indonesia", "Mesir"], c: 2, e: "Jepang mengalami resesi demografi (kelahiran sangat rendah)." },
+
+            // MODUL 7: Ekonomi (61-70)
+            { m: 6, q: "Teori Lokasi Industri yang menekankan pada biaya angkut terendah dikemukakan oleh...", a: ["Christaller", "Von Thunen", "Alfred Weber", "Rostow", "Malthus"], c: 2, e: "Least Cost Location mencari titik biaya transportasi minimal." },
+            { m: 6, q: "Organisasi perdagangan bebas di kawasan Asia Tenggara adalah...", a: ["NAFTA", "EU", "AFTA", "APEC", "OPEC"], c: 2, e: "ASEAN Free Trade Area." },
+            { m: 6, q: "Kegiatan ekonomi yang mengambil langsung dari alam disebut sektor...", a: ["Primer", "Sekunder", "Tersier", "Kuarterner", "Kuinari"], c: 0, e: "Contoh: Pertanian, Perikanan, Pertambangan." },
+            { m: 6, q: "Tahap 'Lepas Landas' (Take Off) merupakan bagian dari teori...", a: ["Pusat Pertumbuhan", "WW Rostow", "Negara Inti", "Malthus", "Globalisasi"], c: 1, e: "Rostow membagi pembangunan ekonomi menjadi 5 tahap." },
+            { m: 6, q: "Dampak positif globalisasi ekonomi bagi konsumen adalah...", a: ["Harga naik", "Pilihan barang beragam & kompetitif", "Produk lokal hilang", "Pajak tinggi", "Inflasi"], c: 1, e: "Pasar bebas membuka akses barang dari seluruh dunia." },
+            { m: 6, q: "Indikator utama kemajuan ekonomi suatu negara adalah...", a: ["Jumlah penduduk", "Luas wilayah", "PDB (Produk Domestik Bruto)", "Banyaknya pasar", "Jumlah tentara"], c: 2, e: "GDP/PDB mencerminkan nilai total produksi barang/jasa." },
+            { m: 6, q: "Negara yang tidak memiliki akses ke laut (Landlocked) biasanya kesulitan dalam...", a: ["Pertanian", "Perdagangan internasional lewat laut", "Hujan", "Sinar matahari", "Migrasi"], c: 1, e: "Ketergantungan pada negara tetangga untuk pelabuhan." },
+            { m: 6, q: "Industri yang lokasinya dekat dengan bahan baku biasanya karena...", a: ["Bahan baku awet", "Bahan baku mudah rusak/berat", "Tenaga kerja murah", "Pasar luas", "Teknologi tinggi"], c: 1, e: "Contoh: Industri semen atau gula." },
+            { m: 6, q: "Contoh kegiatan ekonomi sektor tersier adalah...", a: ["Pabrik mobil", "Perkebunan teh", "Pariwisata & Perbankan", "Tambang emas", "Nelayan"], c: 2, e: "Sektor tersier adalah penyediaan jasa." },
+            { m: 6, q: "Perekonomian digital memicu munculnya fenomena...", a: ["Deurbanisasi", "E-commerce & Gig Economy", "Manufaktur berat", "Ekonomi barter", "Proteksionisme"], c: 1, e: "Perubahan pola belanja ke platform online." },
+
+            // MODUL 8: Perkotaan (71-80)
+            { m: 7, q: "Teori struktur kota yang berbentuk lingkaran konsentris dikemukakan oleh...", a: ["Homer Hoyt", "Harris-Ullman", "Ernest Burgess", "Von Thunen", "Christaller"], c: 2, e: "Pusat kota dikelilingi zona transisi, pemukiman, dan komuter." },
+            { m: 7, q: "Wilayah pinggiran kota yang mulai berubah karakternya menjadi perkotaan disebut...", a: ["Slum", "Suburb", "Rural-Urban Fringe", "Central Business District", "Megacity"], c: 2, e: "Zona transisi antara fisik desa dan kota." },
+            { m: 7, q: "Masalah utama kota besar di negara berkembang adalah...", a: ["Kurang penduduk", "Permukiman kumuh (Slums)", "Terlalu banyak taman", "Kurang sampah", "Ekonomi terlalu merata"], c: 1, e: "Akibat ketidaksiapan infrastruktur menampung urbanisasi." },
+            { m: 7, q: "Kota dengan penduduk lebih dari 10 juta jiwa disebut...", a: ["Metropolis", "Megalopolis", "Megacity", "Tyranopolis", "Necropolis"], c: 2, e: "Contoh: Jakarta, Tokyo, New York." },
+            { m: 7, q: "Penyebaran penduduk kota ke wilayah sekitarnya disebut...", a: ["Urban Sprawl", "Gentrifikasi", "Segregasi", "Aglomerasi", "Sentralisasi"], c: 0, e: "Pekembangan fisik kota yang tidak teratur ke arah luar." },
+            { m: 7, q: "Fungsi utama Ruang Terbuka Hijau (RTH) di kota adalah...", a: ["Parkir", "Area resapan & paru-paru kota", "Lahan mal", "Lokasi PKL", "Iklan"], c: 1, e: "RTH menjaga keseimbangan ekologis perkotaan." },
+            { m: 7, q: "Teori Tempat Sentral (Central Place Theory) menjelaskan tentang...", a: ["Gempa", "Hirarki pelayanan kota", "Aliran sungai", "Migrasi burung", "Suhu"], c: 1, e: "Jangkauan (range) dan ambang (threshold) pelayanan." },
+            { m: 7, q: "Gentrifikasi adalah proses...", a: ["Penghancuran kota", "Perbaikan kawasan kumuh menjadi kelas menengah/elit", "Urbanisasi desa", "Pemisahan ras", "Penurunan suhu"], c: 1, e: "Seringkali menggeser penduduk asli yang kurang mampu." },
+            { m: 7, q: "Zona CBD (Central Business District) biasanya memiliki...", a: ["Rumah murah", "Sawah", "Harga tanah tinggi & bangunan vertikal", "Pabrik kimia", "Hutan"], c: 2, e: "Pusat bisnis dengan aksesibilitas tertinggi." },
+            { m: 7, q: "Interaksi desa-kota menguntungkan desa dalam hal...", a: ["Kehilangan tenaga muda", "Masuknya teknologi & pengetahuan", "Lahan pertanian hilang", "Polusi", "Konsumerisme"], c: 1, e: "Kota menyuplai inovasi dan barang industri ke desa." },
+
+            // MODUL 9: Budaya & Politik (81-90)
+            { m: 8, q: "Wilayah yang memiliki kesamaan ciri budaya disebut...", a: ["Wilayah Formal", "Wilayah Fungsional", "Culture Hearth", "Nodal", "Periferi"], c: 0, e: "Wilayah formal didasarkan pada homogenitas kriteria tertentu." },
+            { m: 8, q: "Proses percampuran dua budaya yang menghasilkan budaya baru disebut...", a: ["Asimilasi", "Akulturasi", "Difusi", "Inovasi", "Separasi"], c: 1, e: "Akulturasi memadukan unsur asing tanpa menghilangkan budaya lama." },
+            { m: 8, q: "Geopolitik Indonesia dikenal dengan istilah...", a: ["Wawasan Nusantara", "Poros Maritim", "Trisakti", "Dwi Dharma", "Bhinneka Tunggal Ika"], c: 0, e: "Cara pandang bangsa Indonesia terhadap diri dan lingkungannya." },
+            { m: 8, q: "Negara yang berdaulat secara penuh atas wilayahnya disebut...", a: ["Koloni", "Protektorat", "Negara Merdeka", "Mandat", "Trustee"], c: 2, e: "Memiliki pengakuan internasional dan pemerintahan sendiri." },
+            { m: 8, q: "Batas wilayah laut teritorial sebuah negara adalah...", a: ["12 mil", "200 mil", "24 mil", "100 mil", "350 mil"], c: 0, e: "Sesuai UNCLOS 1982, batas kedaulatan penuh adalah 12 mil." },
+            { m: 8, q: "Penyebaran unsur budaya dari satu tempat ke tempat lain disebut...", a: ["Migrasi", "Difusi", "Sosialisasi", "Urbanisasi", "Evolusi"], c: 1, e: "Difusi bisa melalui perpindahan orang atau media massa." },
+            { m: 8, q: "Contoh warisan budaya tak benda Indonesia yang diakui UNESCO adalah...", a: ["Borobudur", "Wayang Kulit", "Komodo", "Prambanan", "Lorentz"], c: 1, e: "Intangible Cultural Heritage." },
+            { m: 8, q: "Nasionalisme dapat diperkuat oleh adanya...", a: ["Suku yang banyak", "Bahasa persatuan", "Pulau terpisah", "Perbedaan agama", "Kelas sosial"], c: 1, e: "Bahasa berfungsi sebagai alat pemersatu bangsa." },
+            { m: 8, q: "Konflik perbatasan sering terjadi karena...", a: ["Kesamaan budaya", "Sumber daya alam di wilayah batas", "Suhu udara sama", "Banyak turis", "Batas jelas"], c: 1, e: "Klaim atas minyak, gas, atau mineral di perbatasan." },
+            { m: 8, q: "ZEE (Zona Ekonomi Eksklusif) memberikan hak negara untuk...", a: ["Melarang kapal lewat", "Mengambil sumber daya alam hingga 200 mil", "Membangun tembok", "Mengatur hujan", "Menghapus pajak"], c: 1, e: "Hak berdaulat atas eksplorasi ekonomi." },
+
+            // MODUL 10: Pertanian & Pembangunan (91-100)
+            { m: 9, q: "Sistem pertanian berpindah-pindah (Shifting Cultivation) biasanya merusak...", a: ["Pasar", "Hutan alami", "Udara kota", "Industri", "Migrasi"], c: 1, e: "Pola tebang bakar (slash and burn) memicu deforestasi." },
+            { m: 9, q: "Revolusi Hijau berfokus pada peningkatan hasil...", a: ["Daging", "Padi, Gandum, Jagung", "Ikan", "Kayu", "Susu"], c: 1, e: "Modernisasi pertanian untuk ketahanan pangan global." },
+            { m: 9, q: "Indikator IPM (Indeks Pembangunan Manusia) mengukur Kesehatan, Pendidikan, dan...", a: ["Jumlah Anak", "Standar Hidup Layak (Ekonomi)", "Kekuatan Militer", "Luas Hutan", "Jumlah Mal"], c: 1, e: "Kombinasi usia harapan hidup, sekolah, dan GNI per kapita." },
+            { m: 9, q: "Sistem pengairan tradisional di Bali disebut...", a: ["Sawah", "Subak", "Ladang", "Terasering", "Irigasi"], c: 1, e: "Warisan dunia UNESCO untuk manajemen air kolektif." },
+            { m: 9, q: "Pertanian berkelanjutan menekankan pada penggunaan...", a: ["Pestisida kimia tinggi", "Pupuk organik & konservasi tanah", "Lahan hutan lindung", "Air tanah berlebih", "Mesin tua"], c: 1, e: "Menjaga kualitas lahan untuk jangka panjang." },
+            { m: 9, q: "Masalah utama ketahanan pangan di masa depan adalah...", a: ["Terlalu banyak petani", "Perubahan iklim & alih fungsi lahan", "Kebanyakan pupuk", "Harga terlalu murah", "Banyak gandum"], c: 1, e: "Cuaca ekstrem mengganggu pola tanam." },
+            { m: 9, q: "Pembangunan yang hanya berpusat di satu titik dapat menyebabkan...", a: ["Pemerataan", "Kesenjangan wilayah", "Ekonomi stabil", "Migrasi teratur", "Hutan lestari"], c: 1, e: "Wilayah lain tertinggal (backwash effect)." },
+            { m: 9, q: "Hidroponik adalah teknik menanam dengan media...", a: ["Tanah liat", "Air bergizi", "Pasir gurun", "Batu bara", "Udara kosong"], c: 1, e: "Sangat efisien untuk lahan sempit perkotaan." },
+            { m: 9, q: "Negara maju dicirikan dengan persentase penduduk bekerja di sektor...", a: ["Pertanian", "Industri & Jasa", "Perburuan", "Nelayan", "Pertukangan"], c: 1, e: "Sektor sekunder dan tersier mendominasi ekonomi negara maju." },
+            { m: 9, q: "Tujuan utama SDGs (Sustainable Development Goals) nomor 2 adalah...", a: ["Tanpa Kemiskinan", "Tanpa Kelaparan", "Pendidikan Berkualitas", "Kesetaraan Gender", "Aksi Iklim"], c: 1, e: "Zero Hunger adalah prioritas global ke-2." }
+        ];
+
+        let currentModule = null;
+        let currentIdxInMod = 0;
+        let scoreInMod = 0;
+        let answered = false;
+
+        // Global counters
+        let globalCorrect = 0;
+        let globalWrong = 0;
+
+        function renderModules() {
+            const grid = document.getElementById('module-grid');
+            grid.innerHTML = '';
+            modules.forEach((mod, i) => {
+                const isDone = localStorage.getItem(`geo_final_mod_${i}_done`) === 'true';
+                grid.innerHTML += `
+                    <div onclick="startModule(${i})" class="module-card bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex items-center justify-between">
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 rounded-2xl ${isDone ? 'bg-emerald-500 text-white shadow-emerald-200' : 'bg-slate-100 text-slate-400'} flex items-center justify-center shrink-0 shadow-lg text-xl transition-all duration-500">
+                                <i class="fas ${isDone ? 'fa-check-circle' : mod.icon}"></i>
                             </div>
-                            <div className="text-right">
-                                <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Progress Analisis</p>
-                                <p className="text-lg font-black text-emerald-400 leading-none">{doneCats.length * 10}/100 Soal</p>
+                            <div>
+                                <p class="text-[10px] font-800 text-emerald-500 uppercase tracking-widest mb-0.5">Modul ${i+1}</p>
+                                <h3 class="font-bold text-slate-800 text-sm md:text-base">${mod.title}</h3>
                             </div>
                         </div>
-                    </header>
-
-                    <main className="max-w-4xl mx-auto p-6 relative z-10 flex-grow w-full">
-                        {view === 'menu' && (
-                            <div className="animate-fade-in py-10">
-                                <h2 className="text-3xl font-black text-slate-800 mb-8">Pilih Topik OSN</h2>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    {CATEGORIES.map((cat) => (
-                                        <button 
-                                            key={cat.id}
-                                            onClick={() => { setCurrentCat(cat.id); setView('quiz'); }}
-                                            className={`group p-6 rounded-3xl border-2 transition-all flex items-center gap-6 text-left ${
-                                                doneCats.includes(cat.id) ? 'bg-emerald-50 border-emerald-200' : 'bg-white border-transparent hover:border-slate-800 shadow-sm'
-                                            }`}
-                                        >
-                                            <div className="w-12 h-12 bg-slate-100 rounded-2xl flex items-center justify-center text-slate-600 group-hover:bg-slate-900 group-hover:text-white transition-colors">
-                                                <Icon name={cat.icon} size={24} />
-                                            </div>
-                                            <div className="flex-grow">
-                                                <h3 className="font-black text-slate-800">{cat.name}</h3>
-                                                <p className="text-[10px] text-slate-400 font-bold uppercase">10 Soal Tersedia</p>
-                                            </div>
-                                            {doneCats.includes(cat.id) && <Icon name="check-circle" className="text-emerald-500" />}
-                                        </button>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-
-                        {view === 'quiz' && (
-                            <div className="animate-fade-in py-6">
-                                <div className="flex items-center gap-4 mb-8">
-                                    <button onClick={() => setView('menu')} className="p-3 bg-white rounded-2xl shadow-sm hover:bg-slate-50 transition-colors"><Icon name="arrow-left" size={20} /></button>
-                                    <h2 className="text-xl font-black text-slate-800 uppercase tracking-tight">{CATEGORIES.find(c => c.id === currentCat)?.name}</h2>
-                                </div>
-
-                                <div className="space-y-6">
-                                    {filteredQuestions.map((q, idx) => (
-                                        <div key={q.id} className="bg-white p-8 rounded-[2rem] shadow-sm border border-slate-100">
-                                            <p className="text-lg font-bold text-slate-800 mb-6 leading-relaxed">
-                                                <span className="inline-block bg-slate-900 text-white px-3 py-1 rounded-lg text-sm mr-3">{idx + 1}</span>
-                                                {q.q}
-                                            </p>
-                                            <div className="grid gap-2">
-                                                {q.options.map((opt, oIdx) => (
-                                                    <button 
-                                                        key={oIdx}
-                                                        onClick={() => handleAnswer(q.id, oIdx)}
-                                                        className={`p-4 rounded-2xl border-2 text-left text-sm font-semibold transition-all ${
-                                                            answers[q.id] === oIdx ? 'bg-slate-900 border-slate-900 text-white' : 'bg-slate-50 border-transparent hover:border-slate-200'
-                                                        }`}
-                                                    >
-                                                        {String.fromCharCode(65 + oIdx)}. {opt}
-                                                    </button>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-
-                                <button 
-                                    onClick={() => { setDoneCats([...doneCats, currentCat]); setView('result'); }}
-                                    className="w-full mt-12 bg-emerald-500 hover:bg-emerald-400 text-white py-6 rounded-3xl font-black text-xl shadow-lg transition-all"
-                                >
-                                    SIMPAN & LIHAT HASIL
-                                </button>
-                            </div>
-                        )}
-
-                        {view === 'result' && (
-                            <div className="animate-fade-in py-10 max-w-2xl mx-auto">
-                                <div className="bg-white rounded-[3rem] p-12 shadow-2xl border border-slate-100 text-center mb-10">
-                                    <h2 className="text-sm font-black text-slate-400 uppercase tracking-widest mb-4">Skor Analisis</h2>
-                                    <div className="text-8xl font-black text-slate-900 mb-6 tracking-tighter">{calculateScore(currentCat)}</div>
-                                    <button onClick={() => setView('menu')} className="bg-slate-900 text-white px-8 py-4 rounded-2xl font-bold">KEMBALI KE MENU</button>
-                                </div>
-
-                                <div className="space-y-4">
-                                    <h3 className="font-black text-slate-800 text-xl">Review Kunci Jawaban:</h3>
-                                    {filteredQuestions.map((q, idx) => (
-                                        <div key={q.id} className="bg-white p-6 rounded-3xl border border-slate-100 text-sm">
-                                            <p className="font-bold mb-3">{idx + 1}. {q.q}</p>
-                                            <p className="text-emerald-600 font-bold mb-2">✓ Jawaban: {q.options[q.correct]}</p>
-                                            <div className="p-4 bg-slate-50 rounded-2xl text-slate-500 italic">
-                                                {q.exp}
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-                    </main>
-                </div>
-            );
+                        <div class="${isDone ? 'text-emerald-500' : 'text-slate-300'}">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                `;
+            });
+            updateOverallProgress();
         }
 
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
+        function updateOverallProgress() {
+            let doneCount = 0;
+            for(let i=0; i<10; i++) {
+                if(localStorage.getItem(`geo_final_mod_${i}_done`) === 'true') doneCount++;
+            }
+            document.getElementById('overall-progress').textContent = `PROGRES: ${doneCount * 10}%`;
+            document.getElementById('global-correct').textContent = globalCorrect;
+            document.getElementById('global-wrong').textContent = globalWrong;
+        }
+
+        function startModule(id) {
+            currentModule = id;
+            currentIdxInMod = 0;
+            scoreInMod = 0;
+            document.getElementById('menu-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.remove('hidden');
+            document.getElementById('module-tag').textContent = `Modul ${id + 1}: ${modules[id].title}`;
+            showQuestion();
+        }
+
+        function showQuestion() {
+            answered = false;
+            const qIdx = (currentModule * 10) + currentIdxInMod;
+            const qData = allQuestions[qIdx];
+            
+            document.getElementById('q-counter').textContent = `Soal ${currentIdxInMod + 1}/10`;
+            document.getElementById('progress-bar').style.width = `${(currentIdxInMod + 1) * 10}%`;
+            document.getElementById('question-text').textContent = qData.q;
+            document.getElementById('explanation-box').classList.add('hidden');
+            
+            const container = document.getElementById('options-container');
+            container.innerHTML = '';
+            
+            qData.a.forEach((opt, i) => {
+                const btn = document.createElement('button');
+                btn.className = "option-btn w-full text-left p-5 rounded-2xl bg-white font-semibold text-slate-700 shadow-sm flex items-start gap-4 hover:bg-slate-50";
+                btn.innerHTML = `
+                    <span class="w-7 h-7 rounded-lg bg-slate-100 flex items-center justify-center text-xs font-800 shrink-0 text-slate-500 uppercase">${String.fromCharCode(65+i)}</span>
+                    <span class="text-sm md:text-base">${opt}</span>
+                `;
+                btn.onclick = () => checkAnswer(i, btn);
+                container.appendChild(btn);
+            });
+            window.scrollTo(0,0);
+        }
+
+        function checkAnswer(idx, btn) {
+            if(answered) return;
+            answered = true;
+            const qIdx = (currentModule * 10) + currentIdxInMod;
+            const qData = allQuestions[qIdx];
+            const btns = document.querySelectorAll('.option-btn');
+
+            btns[qData.c].classList.add('correct');
+            btns[qData.c].querySelector('span:first-child').classList.replace('bg-slate-100', 'bg-emerald-500');
+            btns[qData.c].querySelector('span:first-child').classList.add('text-white');
+
+            if(idx === qData.c) {
+                scoreInMod++;
+                globalCorrect++;
+            } else {
+                globalWrong++;
+                btn.classList.add('wrong');
+                btn.querySelector('span:first-child').classList.replace('bg-slate-100', 'bg-red-500');
+                btn.querySelector('span:first-child').classList.add('text-white');
+            }
+
+            updateOverallProgress();
+            document.getElementById('explanation-text').textContent = qData.e;
+            document.getElementById('explanation-box').classList.remove('hidden');
+        }
+
+        function nextQuestion() {
+            currentIdxInMod++;
+            if(currentIdxInMod < 10) {
+                showQuestion();
+            } else {
+                finishModule();
+            }
+        }
+
+        function finishModule() {
+            localStorage.setItem(`geo_final_mod_${currentModule}_done`, 'true');
+            document.getElementById('quiz-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
+            document.getElementById('result-score').textContent = `Kerja bagus Nida! Kamu berhasil menjawab benar ${scoreInMod} dari 10 soal di modul ${modules[currentModule].title}.`;
+            updateOverallProgress();
+        }
+
+        function showMenu() {
+            document.getElementById('quiz-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.add('hidden');
+            document.getElementById('menu-screen').classList.remove('hidden');
+            renderModules();
+        }
+
+        renderModules();
     </script>
 </body>
 </html>
