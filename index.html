@@ -3,308 +3,311 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GeoQuiz OSN - Bank Soal Lengkap Puspresnas</title>
+    <title>Simulasi CBT Geografi - 100 Soal</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
-        .option-card { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
-        .fade-in { animation: fadeIn 0.4s ease-out; }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        .question-nav-btn {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 600;
         }
-        .category-card:hover { transform: scale(1.02); }
+        .nav-answered { background-color: #3b82f6; color: white; }
+        .nav-current { border: 2px solid #1e40af; background-color: #dbeafe; }
+        .nav-unanswered { background-color: #f3f4f6; color: #374151; }
+        
+        body { background-color: #f9fafb; font-family: 'Inter', sans-serif; }
     </style>
 </head>
-<body class="bg-slate-50 min-h-screen text-slate-900">
+<body class="min-h-screen">
 
-    <!-- Header / Navbar -->
-    <header class="bg-blue-800 text-white shadow-xl p-5 sticky top-0 z-50 border-b-4 border-yellow-400">
-        <div class="max-w-5xl mx-auto flex justify-between items-center">
-            <div class="cursor-pointer" onclick="location.reload()">
-                <h1 class="text-xl font-extrabold italic tracking-tighter uppercase">GEOQUIZ <span class="text-yellow-300">OSN</span></h1>
-                <p class="text-[10px] opacity-80 font-bold uppercase tracking-widest text-blue-100">Simulasi Berbasis PDF Puspresnas</p>
-            </div>
-            <div id="active-category-indicator" class="hidden bg-blue-900 px-4 py-1.5 rounded-full text-xs font-bold border border-blue-700">
-                Mode Latihan
-            </div>
+    <!-- Header -->
+    <header class="bg-blue-800 text-white p-4 shadow-md sticky top-0 z-50">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-bold">Simulasi OSN Geografi 2025</h1>
+            <div id="timer" class="bg-blue-900 px-4 py-2 rounded-lg font-mono text-lg">02:00:00</div>
         </div>
     </header>
 
-    <main class="max-w-5xl mx-auto px-4 py-8">
+    <main class="container mx-auto p-4 flex flex-col lg:flex-row gap-6">
         
-        <!-- Welcome Screen -->
-        <div id="welcome-screen" class="fade-in">
-            <div class="text-center mb-10">
-                <h2 class="text-3xl font-black text-slate-800 mb-2">Pilih Materi Latihan</h2>
-                <p class="text-slate-500 italic">Data dikompilasi dari 6 Bank Soal Master Puspresnas</p>
-            </div>
+        <!-- Panel Kiri: Soal -->
+        <div class="lg:w-3/4">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                <div class="flex justify-between items-center mb-4">
+                    <span id="question-number" class="text-blue-800 font-bold text-lg">Soal No. 1</span>
+                    <span class="text-gray-500 text-sm italic">Pilih satu jawaban terbaik</span>
+                </div>
+                
+                <p id="question-text" class="text-gray-800 text-lg mb-6 leading-relaxed">
+                    Sedang memuat soal...
+                </p>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="category-list">
-                <!-- Diisi otomatis oleh JavaScript -->
+                <div id="options-container" class="space-y-3">
+                    <!-- Opsi Jawaban -->
+                </div>
+
+                <div class="flex justify-between mt-8 pt-6 border-t border-gray-100">
+                    <button onclick="prevQuestion()" class="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition">Sebelumnya</button>
+                    <button onclick="nextQuestion()" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">Selanjutnya</button>
+                </div>
             </div>
         </div>
 
-        <!-- Quiz Screen -->
-        <div id="quiz-screen" class="hidden fade-in">
-            <div class="flex justify-between items-center mb-6">
-                <button onclick="confirmExit()" class="text-slate-400 hover:text-red-500 font-bold text-sm flex items-center gap-2 transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
-                    Keluar
-                </button>
-                <div class="flex items-center gap-4">
-                    <span id="progress-text" class="text-[10px] font-black uppercase tracking-widest text-blue-600 bg-blue-50 px-3 py-1 rounded-full">Soal 1/5</span>
-                    <div class="bg-white px-4 py-1.5 rounded-lg shadow-sm border border-slate-100 font-mono font-bold text-slate-600" id="timer">00:00</div>
+        <!-- Panel Kanan: Navigasi & Status -->
+        <div class="lg:w-1/4">
+            <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 sticky top-24">
+                <h3 class="font-bold mb-4 text-gray-700">Navigasi Soal</h3>
+                <div id="nav-grid" class="grid grid-cols-5 gap-2 max-h-[400px] overflow-y-auto pr-2">
+                    <!-- Grid Nomor Soal -->
                 </div>
-            </div>
-            
-            <div class="bg-white rounded-3xl shadow-xl p-8 border border-slate-100 mb-8 min-h-[400px] flex flex-col justify-center">
-                <div id="question-text" class="text-lg md:text-xl font-bold text-slate-800 leading-relaxed mb-10">
-                    Memuat pertanyaan...
-                </div>
-                <div id="options-container" class="grid grid-cols-1 gap-4"></div>
-            </div>
 
-            <div class="text-right">
-                <button id="next-btn" disabled onclick="nextQuestion()" class="bg-slate-200 text-slate-400 px-10 py-4 rounded-2xl font-black uppercase tracking-wider text-sm transition-all shadow-md">
-                    Lanjut
-                </button>
-            </div>
-        </div>
-
-        <!-- Result Screen -->
-        <div id="result-screen" class="hidden fade-in pb-20">
-            <div class="bg-white rounded-3xl shadow-2xl p-8 border border-slate-100 text-center mb-8">
-                <h2 class="text-2xl font-black text-slate-800 mb-6 uppercase italic">Analisis Hasil</h2>
-                <div class="flex justify-center gap-4 mb-8">
-                    <div class="bg-blue-600 p-6 rounded-2xl text-white min-w-[120px]">
-                        <div id="final-score" class="text-4xl font-black">0</div>
-                        <div class="text-[10px] font-bold uppercase opacity-80">Skor Akhir</div>
+                <div class="mt-6 pt-6 border-t border-gray-100">
+                    <div class="flex gap-4 mb-4 text-sm">
+                        <div class="flex items-center gap-2"><span class="w-3 h-3 bg-blue-600 rounded-full"></span> Dijawab</div>
+                        <div class="flex items-center gap-2"><span class="w-3 h-3 bg-gray-200 rounded-full"></span> Belum</div>
                     </div>
-                    <div class="bg-emerald-500 p-6 rounded-2xl text-white min-w-[120px]">
-                        <div id="correct-count" class="text-4xl font-black">0</div>
-                        <div class="text-[10px] font-bold uppercase opacity-80">Benar</div>
-                    </div>
+                    <button onclick="finishExam()" class="w-full py-3 bg-red-600 text-white font-bold rounded-lg hover:bg-red-700 transition shadow-lg">Selesai Ujian</button>
                 </div>
-                <button onclick="location.reload()" class="bg-slate-800 text-white px-8 py-3 rounded-xl font-bold hover:bg-black transition-all">Selesai & Menu Utama</button>
-            </div>
-
-            <div class="space-y-4">
-                <h3 class="font-black text-slate-700 uppercase tracking-widest text-sm ml-2">Detail Pembahasan (Berdasarkan Modul Puspresnas)</h3>
-                <div id="review-section" class="space-y-4"></div>
             </div>
         </div>
     </main>
 
+    <!-- Modal Hasil -->
+    <div id="result-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center p-4 z-[100]">
+        <div class="bg-white rounded-2xl p-8 max-w-md w-full text-center">
+            <h2 class="text-2xl font-bold mb-2">Ujian Selesai!</h2>
+            <p class="text-gray-600 mb-6">Berikut adalah ringkasan hasil Anda:</p>
+            <div class="grid grid-cols-2 gap-4 mb-6">
+                <div class="bg-green-50 p-4 rounded-lg">
+                    <div class="text-sm text-green-700">Benar</div>
+                    <div id="res-correct" class="text-2xl font-bold">0</div>
+                </div>
+                <div class="bg-red-50 p-4 rounded-lg">
+                    <div class="text-sm text-red-700">Salah</div>
+                    <div id="res-wrong" class="text-2xl font-bold">0</div>
+                </div>
+            </div>
+            <div class="text-4xl font-extrabold text-blue-800 mb-2" id="res-score">Skor: 0</div>
+            <p class="text-sm text-gray-400 mb-6">*Sistem penilaian OSN: Benar +4, Salah -1</p>
+            <button onclick="location.reload()" class="w-full py-3 bg-blue-600 text-white rounded-xl font-bold">Ulangi Simulasi</button>
+        </div>
+    </div>
+
     <script>
-        const quizData = {
-            "iklim": {
-                title: "Iklim & Perubahan Iklim",
-                icon: "M3 15a4 4 0 110-8 4 4 0 010 8z M15 8V7a3 3 0 00-3-3h-1m-4 10V15a3 3 0 013-3h1",
-                questions: [
-                    { tanya: "Aktivitas pembakaran bahan bakar fosil dan penebangan hutan memengaruhi perubahan iklim dengan cara...", opsi: ["Membantu meningkatkan kadar oksigen di udara", "Membuat gas rumah kaca di atmosfer berkurang", "Menambah jumlah CO2 sehingga memperkuat efek rumah kaca", "Menjadikan pola cuaca dunia semakin stabil", "Mempercepat proses fotosintesis di lautan"], kunci: 2, bahas: "Pembakaran fosil melepaskan CO2, sementara penebangan hutan menghilangkan penyerap karbon alami. Hal ini memperkuat efek 'selimut' di atmosfer yang memerangkap panas matahari." },
-                    { tanya: "Peningkatan kadar CO2 di laut akan memengaruhi kondisi fisiologis terumbu karang dalam bentuk...", opsi: ["Pertumbuhan karang jadi lebih cepat", "Pemutihan (bleaching) karena suhu air laut naik", "Menambah jumlah ikan di terumbu karang", "Mengurangi kadar oksigen secara drastis", "Memperkuat struktur kalsium karang"], kunci: 1, bahas: "Suhu panas menyebabkan stres pada karang sehingga mengeluarkan alga simbiotik (Zooxanthellae). Tanpa alga ini, karang menjadi putih (bleaching), lemah, dan bisa mati." },
-                    { tanya: "Target utama Paris Agreement yang disepakati lebih dari 190 negara adalah menahan kenaikan suhu global di bawah...", opsi: ["1,0°C", "1,5°C", "2,0°C", "2,5°C", "3,0°C"], kunci: 1, bahas: "Paris Agreement menargetkan penahanan suhu global agar tidak melewati ambang batas 1,5°C melalui aksi nyata transisi energi dan konservasi hutan." }
-                ]
-            },
-            "geologi": {
-                title: "Geologi & Geomorfologi",
-                icon: "M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4",
-                questions: [
-                    { tanya: "Palung Mariana terbentuk karena Lempeng Pasifik...", opsi: ["Naik ke atas Lempeng Filipina", "Naik ke atas Lempeng Indo-Australia", "Menunjam ke bawah Lempeng Filipina", "Menunjam ke bawah Lempeng Indo-Australia", "Menunjam ke bawah Lempeng Eurasia"], kunci: 2, bahas: "Lempeng Pasifik (Lempeng Samudra Tua/Berat) menunjam ke bawah Lempeng Filipina (Lempeng Muda/Ringan). Zona tubrukan ini disebut Subduksi." },
-                    { tanya: "Lempeng Samudra (SiMa) lebih berat daripada Lempeng Benua (SiAl) karena mengandung banyak...", opsi: ["Alumunium", "Magnesium", "Kalsium", "Tembaga", "Perak"], kunci: 1, bahas: "Lempeng Samudra kaya akan Silikat Magnesium (SiMa) yang densitasnya lebih tinggi dibandingkan Silikat Alumunium (SiAl) pada Lempeng Benua." },
-                    { tanya: "Morfologi sungai yang berkelok-kelok tajam secara teratur melalui dataran banjir disebut...", opsi: ["Anastomosing", "Braided River", "Sungai Kelok Banyak", "Meandering", "Sungai U"], kunci: 3, bahas: "Meandering adalah pola sungai berkelok tajam akibat proses erosi di sisi luar (cut bank) dan sedimentasi di sisi dalam (point bar) yang berkelanjutan." },
-                    { tanya: "Lingkungan pengendapan di muara sungai tempat sungai masuk ke laut disebut...", opsi: ["Dataran Banjir", "Anak Sungai", "Daerah Aliran Sungai", "Delta", "Spit"], kunci: 3, bahas: "Saat kecepatan aliran sungai menurun drastis di muara, sedimen mengendap membentuk daratan baru yang sering bercabang-cabang, disebut Delta." }
-                ]
-            },
-            "bencana": {
-                title: "Manajemen Bencana",
-                icon: "M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z",
-                questions: [
-                    { tanya: "Tipe gerakan tanah dengan kejenuhan air paling tinggi (paling basah) adalah...", opsi: ["Soil Creep", "Slump", "Mudflow", "Rockfall", "Topples"], kunci: 2, bahas: "Mudflow (aliran lumpur) memiliki kadar air sangat tinggi sehingga material mengalir seperti cairan kental. Soil creep adalah yang paling lambat dan kering." },
-                    { tanya: "Fenomena tanah kehilangan kekuatan dan berubah seperti cairan akibat guncangan gempa disebut...", opsi: ["Erosi", "Likuifaksi", "Abrasi", "Subsiden", "Deflasi"], kunci: 1, bahas: "Likuifaksi terjadi pada tanah berpasir jenuh air atau bekas rawa. Guncangan gempa membuat butiran tanah terlepas dari kontaknya dan 'mengapung' dalam air." },
-                    { tanya: "Salah satu upaya mengurangi risiko bencana likuifaksi yang tepat adalah...", opsi: ["Memperkuat dinding bangunan", "Membangun rumah atap ringan", "Membangun di wilayah bekas rawa", "Memetakan wilayah bekas rawa", "Memperbaiki jalan melintasi rawa"], kunci: 3, bahas: "Memetakan wilayah bekas rawa/sungai sangat penting karena wilayah tersebut memiliki risiko likuifaksi tertinggi saat gempa terjadi." },
-                    { tanya: "Unsur kapasitas finansial dalam mitigasi bencana ditunjukkan oleh...", opsi: ["EWS", "Peta Risiko", "Akses terhadap dana pinjaman mitigasi", "Kurikulum Sekolah", "Rencana Darurat"], kunci: 2, bahas: "Kapasitas finansial berkaitan dengan ketersediaan dana darurat, asuransi bencana, atau akses modal untuk pemulihan ekonomi." }
-                ]
-            },
-            "sumberdaya": {
-                title: "Sumber Daya Alam",
-                icon: "M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h14a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z",
-                questions: [
-                    { tanya: "Pasangan sumber daya alam renewable dan non-renewable yang tepat adalah...", opsi: ["Nuklir; Minyak Bumi", "Surya; Panas Bumi", "Gas Alam; Air", "Angin; Gas Alam", "Biomassa; Panas Bumi"], kunci: 3, bahas: "Angin (renewable) selalu ada selama atmosfer ada, sedangkan Gas Alam (non-renewable) terbentuk dari fosil jutaan tahun lalu dan jumlahnya terbatas." },
-                    { tanya: "Rasio elektrifikasi adalah perbandingan antara...", opsi: ["Jumlah daya listrik nasional", "Jumlah rumah tangga dengan akses listrik vs total rumah tangga", "Jumlah gardu listrik daerah", "Biaya tagihan rata-rata", "Produksi batubara PLTU"], kunci: 1, bahas: "Rasio elektrifikasi menunjukkan sejauh mana pemerataan akses listrik menjangkau seluruh penduduk di suatu wilayah (biasanya dalam persen)." },
-                    { tanya: "Lokasi paling ideal untuk pembangunan PLTA memerlukan faktor fisik berupa...", opsi: ["Topografi datar", "Curah hujan rendah", "Topografi curam & curah hujan tinggi", "Dekat pusat kota", "Pengaruh musim hujan saja"], kunci: 2, bahas: "PLTA membutuhkan beda tinggi (head) dari topografi curam dan debit air yang stabil/besar dari curah hujan tinggi." }
-                ]
-            },
-            "lingkungan": {
-                title: "Lingkungan & Pembangunan",
-                icon: "M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z",
-                questions: [
-                    { tanya: "Jika Amir menemukan kadar Kadmium (Cd) di sungai sebesar 200 ppm, artinya...", opsi: ["200 kali ambang batas", "200 ml dalam 1000 mg air", "200 mg dalam 1 ml air", "200 gram dalam 1 liter air", "200 mg dalam 1000 ml (1 liter) air"], kunci: 4, bahas: "1 ppm (Part Per Million) setara dengan 1 mg zat dalam 1 Liter (1000 ml) air. Jadi 200 ppm berarti ada 200 mg polutan di setiap liternya." },
-                    { tanya: "Skenario 'Fortress World' menggambarkan kondisi masa depan di mana...", opsi: ["Ekonomi stabil dan merata", "Manusia fokus pada kualitas hidup", "Ketimpangan ekstrem; si kaya memagari diri dengan militer", "Masalah lingkungan selesai oleh teknologi", "Populasi berkurang drastis"], kunci: 2, bahas: "Fortress World (Dunia Benteng) adalah skenario distopia di mana pembangunan gagal mencapai keadilan; kekacauan terjadi di luar benteng sementara elit terisolasi di dalam." },
-                    { tanya: "Skenario 'Market Forces' mengandalkan penyelesaian masalah lingkungan melalui...", opsi: ["Hukum adat", "Pertanian tradisional", "Teknologi dan mekanisme pasar", "Pemerataan populasi", "Pengurangan konsumsi"], kunci: 2, bahas: "Market Forces fokus pada pertumbuhan GDP dan percaya bahwa teknologi serta mekanisme pasar akan mengoreksi masalah lingkungan secara otomatis." }
-                ]
-            },
-            "pertanian": {
-                title: "Pertanian & Pangan",
-                icon: "M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253",
-                questions: [
-                    { tanya: "Pernyataan yang tepat mengenai Revolusi Hijau (1960-2000) dan Revolusi Industri 4.0 adalah...", opsi: ["Revolusi Hijau tidak menaikkan produksi", "Revolusi Hijau meningkatkan produksi tapi berdampak lingkungan signifikan", "Revolusi 4.0 menurunkan efisiensi", "Keduanya tidak menggunakan teknologi", "Revolusi 4.0 berdampak lingkungan lebih buruk"], kunci: 1, bahas: "Revolusi Hijau fokus pada bibit unggul & kimia yang menaikkan produksi namun merusak ekosistem. Revolusi 4.0 berupaya memperbaiki efisiensi lewat AI/IoT." },
-                    { tanya: "Tantangan utama dari sistem pertanian sawah (lahan basah) dibandingkan lahan kering adalah...", opsi: ["Minim tenaga kerja", "Kebutuhan air mutlak & risiko kerusakan irigasi", "Pupuk kimia terlalu murah", "Kurang bibit padi", "Tidak bisa mekanisasi"], kunci: 1, bahas: "Sawah sangat bergantung pada genangan air. Jika saluran irigasi rusak atau terjadi kemarau panjang, risiko gagal panen (puso) sangat tinggi." },
-                    { tanya: "Istilah untuk kondisi tanaman padi yang tidak menghasilkan bulir sama sekali akibat kekeringan atau hama disebut...", opsi: ["Puso", "Erosi", "Likuifaksi", "Pencemaran", "Infiltrasi"], kunci: 0, bahas: "Puso adalah kegagalan panen total di mana tanaman tidak menghasilkan hasil ekonomi (bulir padi) sama sekali." }
-                ]
-            }
-        };
+        // Data 100 Soal Geografi
+        const rawQuestions = [
+            { q: "Aktivitas manusia seperti penggunaan bahan bakar fosil dan deforestasi terus meningkat. Dampak utama dari aktivitas tersebut terhadap perubahan iklim adalah …", a: "Meningkatkan kadar oksigen di atmosfer", b: "Mengurangi konsentrasi gas rumah kaca", c: "Menambah emisi karbon dioksida yang memperkuat efek rumah kaca", d: "Menjadikan kondisi cuaca lebih stabil", e: "Mempercepat fotosintesis di perairan", correct: "c" },
+            { q: "Pencairan es di wilayah kutub menyebabkan kenaikan permukaan laut. Jika kondisi ini terus berlanjut, dampak yang paling mungkin bagi negara kepulauan seperti Indonesia adalah …", a: "Terbentuknya daratan baru dari sedimentasi", b: "Tenggelamnya pulau kecil dan meningkatnya banjir rob", c: "Penurunan suhu wilayah secara drastis", d: "Ekosistem pesisir menjadi lebih stabil", e: "Berkurangnya frekuensi badai tropis", correct: "b" },
+            { q: "Fenomena La Niña sering memengaruhi kondisi cuaca di Indonesia. Dampak utama yang biasanya terjadi saat La Niña adalah …", a: "Kemarau panjang dan kekeringan", b: "Curah hujan tinggi yang memicu banjir dan longsor", c: "Penurunan suhu laut secara ekstrem", d: "Aktivitas vulkanik meningkat", e: "Kekeringan di wilayah pesisir", correct: "b" },
+            { q: "Kesepakatan internasional untuk menahan kenaikan suhu global hingga maksimal 1,5°C bertujuan untuk …", a: "Meningkatkan penggunaan energi fosil", b: "Menyeragamkan sistem mitigasi bencana", c: "Mengurangi dampak ekstrem perubahan iklim dan menjaga ekosistem", d: "Meningkatkan produksi pertanian global", e: "Mengurangi populasi di wilayah pesisir", correct: "c" },
+            { q: "Peningkatan karbon dioksida di laut dapat memengaruhi terumbu karang. Dampak yang paling umum terjadi adalah …", a: "Pertumbuhan karang semakin cepat", b: "Terjadi pemutihan karang akibat kenaikan suhu laut", c: "Jumlah ikan meningkat drastis", d: "Kandungan oksigen dalam karang meningkat", e: "Struktur karang menjadi lebih kuat", correct: "b" },
+            { q: "Jika konsentrasi gas rumah kaca terus meningkat, dampak terhadap persebaran hewan adalah …", a: "Hewan tetap di habitat asalnya", b: "Pola migrasi berubah untuk mencari lingkungan yang sesuai", c: "Semua spesies langsung punah", d: "Tidak terjadi perubahan keanekaragaman hayati", e: "Hewan laut berpindah ke daratan", correct: "b" },
+            { q: "Penurunan salinitas laut akibat mencairnya es kutub berdampak pada arus laut global. Dampak utamanya adalah …", a: "Arus laut bergerak lebih cepat", b: "Arus termohalin melambat dan distribusi panas terganggu", c: "Tidak memengaruhi arus laut", d: "Arus laut mengarah ke kutub", e: "Semua arus laut berhenti total", correct: "b" },
+            { q: "Gas metana dianggap lebih berbahaya dibanding CO₂ dalam pemanasan global karena …", a: "Jumlahnya lebih banyak di atmosfer", b: "Kemampuannya menyerap panas lebih besar dalam waktu singkat", c: "Mudah terurai menjadi gas lain", d: "Tidak bereaksi dengan zat lain", e: "Hanya berasal dari aktivitas vulkanik", correct: "b" },
+            { q: "Fenomena El Niño dapat meningkatkan risiko kebakaran hutan di Indonesia karena …", a: "Musim kemarau lebih pendek", b: "Musim kemarau lebih panjang sehingga kondisi sangat kering", c: "Curah hujan meningkat saat kemarau", d: "Suhu udara menurun", e: "Kelembapan tanah meningkat", correct: "b" },
+            { q: "Jika sirkulasi termohalin global berhenti, dampak yang paling mungkin terjadi adalah …", a: "Eropa Utara menjadi lebih dingin, wilayah tropis semakin panas", b: "Eropa Utara menjadi lebih panas, wilayah tropis mendingin", c: "Semua wilayah menjadi lebih panas", d: "Semua wilayah menjadi lebih dingin", e: "Tidak terjadi perubahan signifikan", correct: "a" },
+            { q: "Palung Mariana terbentuk akibat proses tektonik di mana Lempeng Pasifik …", a: "bergerak naik di atas Lempeng Filipina", b: "menekan ke atas Lempeng Indo-Australia", c: "menunjam ke bawah Lempeng Filipina", d: "menunjam ke bawah Lempeng Indo-Australia", e: "menunjam ke bawah Lempeng Eurasia", correct: "c" },
+            { q: "Pada pola magnetik batuan di dasar samudra, lokasi batuan tertua terdapat pada …", a: "Titik terjauh dari punggung tengah samudra", b: "Pusat punggung tengah samudra", c: "Titik di antara punggung", d: "Semua titik sama", e: "Zona subduksi saja", correct: "a" },
+            { q: "Arus konveksi mantel yang berkaitan dengan hotspot ditunjukkan oleh penampang yang menggambarkan …", a: "aliran naik dan turun yang terpusat di satu titik panas", b: "pergerakan lateral tanpa sumber panas", c: "arus konveksi acak tanpa pola", d: "aliran mantel yang tidak mencapai kerak", e: "tidak ada gambar yang sesuai", correct: "a" },
+            { q: "Proses erosi yang menghasilkan goresan sejajar pada batuan umumnya disebabkan oleh …", a: "Gletser", b: "Air mengalir", c: "Angin", d: "Gelombang laut", e: "Gerakan massa", correct: "a" },
+            { q: "Mineral yang paling tahan terhadap pelapukan fisik biasanya adalah …", a: "Kalsit", b: "Halit", c: "Gipsum", d: "Olivin", e: "Kuarsa", correct: "e" },
+            { q: "Pada proses metamorfisme kontak pada batuan kapur, batuan yang terbentuk adalah …", a: "Kuarsit", b: "Sekis", c: "Marmer", d: "Gneis", e: "Filit", correct: "c" },
+            { q: "Tekstur batuan diorit yang terbentuk dalam intrusi umumnya memiliki ciri …", a: "Halus dan berongga", b: "Halus dan tidak berongga", c: "Kasasr dan tidak berongga", d: "Kaca dan berongga", e: "Berlapis", correct: "c" },
+            { q: "Bentuk sungai yang memiliki kelokan tajam dan berulang dikenal sebagai …", a: "Anastomosing", b: "Braided river", c: "Sungai lurus", d: "Meandering", e: "Sungai berbentuk U", correct: "d" },
+            { q: "Bagian muara sungai yang menjadi tempat pengendapan sedimen sebelum masuk laut disebut …", a: "Dataran banjir", b: "Anak sungai", c: "DAS", d: "Delta", e: "Spit", correct: "d" },
+            { q: "Jenis gerakan tanah dengan kandungan air paling tinggi adalah …", a: "Soil creep", b: "Slump", c: "Mudflow", d: "Rockfall", e: "Topples", correct: "c" },
+            { q: "Faktor yang meningkatkan kerentanan fisik terhadap bencana adalah …", a: "Jumlah penduduk usia tua dan anak-anak", b: "Komposisi jenis kelamin", c: "Kondisi tanah", d: "Kualitas bangunan tempat tinggal", e: "Tingkat pendapatan", correct: "d" },
+            { q: "Contoh upaya mitigasi nonstruktural dalam penanggulangan bencana adalah …", a: "Pembuatan jalur evakuasi", b: "Penanaman mangrove", c: "Pembangunan monumen bencana", d: "Pelatihan dan sosialisasi", e: "Perbaikan tanggul", correct: "d" },
+            { q: "Kegiatan yang termasuk tahap prabencana dalam manajemen bencana adalah …", a: "Pendataan kerusakan", b: "Evakuasi korban", c: "Perancangan rumah tahan gempa", d: "Pemetaan dampak", e: "Perbaikan infrastruktur", correct: "c" },
+            { q: "Dalam sistem peringatan dini gunung api, evakuasi segera dilakukan saat status …", a: "Normal", b: "Waspada", c: "Awas", d: "Siaga", e: "Hati-hati", correct: "c" },
+            { q: "Salah satu indikator kapasitas kelembagaan dalam pengurangan risiko bencana adalah …", a: "Ketersediaan dana darurat", b: "Pelatihan tanggap darurat", c: "Kurikulum kebencanaan", d: "Rencana darurat dan peta risiko", e: "Akses pinjaman", correct: "d" },
+            { q: "Upaya yang tepat untuk mengurangi risiko likuifaksi adalah …", a: "Memperkuat dinding bangunan", b: "Menggunakan atap ringan", c: "Menghindari pembangunan di tanah jenuh air", d: "Memetakan wilayah rawan", e: "Memperbaiki jalan", correct: "c" },
+            { q: "Pasangan sumber daya alam terbarukan dan tidak terbarukan yang tepat adalah …", a: "Nuklir – minyak bumi", b: "Surya – panas bumi", c: "Gas alam – air", d: "Angin – gas alam", e: "Biomassa – panas bumi", correct: "d" },
+            { q: "Pengembangan energi nuklir di Indonesia menghadapi kendala utama berupa …", a: "Kerawanan bencana", b: "Biaya tinggi, teknologi asing, dan risiko limbah", c: "Kekurangan bahan baku", d: "Tidak menjadi prioritas nasional", e: "Penolakan masyarakat", correct: "b" },
+            { q: "Upaya meningkatkan pemanfaatan energi terbarukan oleh pemerintah adalah …", a: "Menaikkan harga energi fosil", b: "Membangun PLTU baru", c: "Membangun pembangkit gas", d: "Menetapkan harga listrik PLTGU", e: "Memberikan insentif investasi EBT", correct: "e" },
+            { q: "Dampak utama penggunaan energi fosil terhadap lingkungan adalah …", a: "Biaya tinggi", b: "Distribusi mahal", c: "Pencemaran sungai", d: "Kerusakan kota", e: "Meningkatkan suhu global", correct: "e" },
+            { q: "Salah satu dampak negatif penggunaan energi berbasis fosil adalah …", a: "Biaya produksi tinggi", b: "Transportasi mahal", c: "Pencemaran air sungai", d: "Kerusakan lingkungan perkotaan", e: "Memicu peningkatan suhu global", correct: "e" },
+            { q: "Letak Indonesia pada jalur cincin api memberikan keuntungan berupa potensi energi …", a: "Air terjun", b: "Panas bumi", c: "Batu bara", d: "Minyak bumi", e: "Nikel", correct: "b" },
+            { q: "Dari data rasio elektrifikasi Indonesia (2018–2024), kenaikan rata-rata menunjukkan peningkatan sebesar...", a: "Kurang dari 0,2% per tahun", b: "Sekitar 0,3% per tahun", c: "Sekitar 0,6% per tahun", d: "Lebih dari 1% per tahun", e: "Tidak mengalami peningkatan", correct: "b" },
+            { q: "Lokasi ideal pembangunan PLTA ditentukan oleh kondisi …", a: "Budaya masyarakat agraris", b: "Topografi datar dan hujan rendah", c: "Tingginya kebutuhan listrik", d: "Lereng curam dan curah hujan tinggi", e: "Wilayah musiman hujan", correct: "d" },
+            { q: "Hasil uji laboratorium menunjukkan kadar Cd sebesar 200 ppm dalam air sungai. Artinya adalah …", a: "200 kali melebihi batas normal", b: "200 ml Cd per 1000 mg air", c: "200 mg Cd dalam 1 ml air", d: "200 gram Cd dalam 1 liter air", e: "200 mg Cd dalam 1000 ml air", correct: "e" },
+            { q: "Karakteristik utama sungai tipe blackwater adalah …", a: "pH netral dan konduktivitas tinggi", b: "Kandungan ion rendah dan bersifat asam", c: "Kaya sedimen mineral", d: "Jernih dengan zat terlarut tinggi", e: "Berasal dari pegunungan tinggi", correct: "b" },
+            { q: "Pendekatan fitoremediasi dalam mengatasi pencemaran dilakukan dengan cara …", a: "Filter udara di pabrik", b: "Bakateri rekayasa", c: "Menanam tumbuhan penyerap polutan", d: "Membangun dinding penahan", e: "Menggunakan bahan kimia dispersan", correct: "c" },
+            { q: "Pada ekosistem gurun, proses dekomposisi lambat karena …", a: "Aktivitas mikroba tinggi", b: "Curah hujan ekstrem", c: "Kondisi sangat kering", d: "Tidak ada serasah", e: "Erosi angin tinggi", correct: "c" },
+            { q: "Siklus biogeokimia yang tidak memiliki fase gas adalah …", a: "Fosfor", b: "Sulfur", c: "Nitrogen", d: "Karbon", e: "Bes", correct: "a" },
+            { q: "Berdasarkan diagram Peltier, wilayah dengan curah hujan ±650 mm/tahun dan suhu ±7°C cenderung mengalami …", a: "Pelapukan mekanik ringan", b: "Pelapukan kimia sedang", c: "Pelapukan kimia + pembekuan", d: "Hampir tidak ada pelapukan", e: "Pelapukan mekanik kuat", correct: "c" },
+            { q: "Perpindahan zat beracun dalam rantai makanan yang semakin meningkat pada tiap tingkat trofik disebut …", a: "Bioremediasi", b: "Bioakumulasi", c: "Transfer energi", d: "Akumulasi energi", e: "Biomagnifikasi", correct: "e" },
+            { q: "Yang bukan termasuk fungsi pengatur ekosistem adalah …", a: "Regulasi iklim", b: "Pengendalian hama", c: "Siklus nutrien", d: "Penjernihan air", e: "Penyerbukan", correct: "c" },
+            { q: "Jika populasi meningkat pesat tetapi pertumbuhan ekonomi tidak sebanding, kondisi tersebut mengarah pada skenario …", a: "Sustainable paradigm", b: "Eco-communalism", c: "Fortress world", d: "Conventional world", e: "Balanced growth", correct: "c" },
+            { q: "Kesimpulan umum dari Revolusi Hijau dan Industri 4.0 adalah …", a: "Revolusi Hijau tanpa dampak lingkungan", b: "Industri 4.0 menurunkan efisiensi", c: "Keduanya meningkatkan produksi, namun Revolusi Hijau berdampak lingkungan besar", d: "Tidak ada hubungan", e: "Industri 4.0 lebih merusak lingkungan", correct: "c" },
+            { q: "Efisiensi produksi pertanian pada kedua era menunjukkan bahwa …", a: "Revolusi Hijau efisien tanpa teknologi", b: "Industri 4.0 stagnan", c: "Revolusi Hijau tidak efisien karena biaya lingkungan tinggi", d: "Revolusi Hijau lebih efisien", e: "Industri 4.0 meningkatkan presisi", correct: "e" },
+            { q: "Berdasarkan komposisi tanah (pasir dominan, debu cukup tinggi), jenis tanah tersebut adalah …", a: "Sandy loam", b: "Silt clay loam", c: "Clay", d: "Silt loam", e: "Sandy clay", correct: "a" },
+            { q: "Dari peta luas lahan pertanian global, Asia Tenggara didominasi oleh...", a: "Asia Tenggara didominasi lahan besar", b: "Lahan kecil kurang dari 2 hektar", c: "Lahan menengah", d: "Lahan perkebunan luas", e: "Padang rumput", correct: "b" },
+            { q: "Wilayah dengan dominasi lahan pertanian sangat luas (>50 ha) adalah …", a: "Asia Tenggara", b: "Amerika Tengah", c: "Afrika Tengah", d: "Amerika Selatan bagian selatan", e: "Jepang dan Korea", correct: "d" },
+            { q: "Sistem pertanian intensif subsisten ditunjukkan oleh …", a: "Produksi tinggi tanpa tenaga kerja", b: "Tenaga kerja tinggi dan hasil tinggi per lahan", c: "Pertanian ekspor", d: "Ladang berpindah", e: "Mekanisasi tinggi", correct: "b" },
+            { q: "Dampak sosial ekonomi dari sistem pertanian tradisional di negara berkembang adalah …", a: "Industrialisasi cepat", b: "Mekanisasi tinggi", c: "Ketahanan pangan berbasis keluarga tetap terjaga", d: "Ketimpangan lahan meningkat", e: "Penurunan biodiversitas", correct: "c" },
+            { q: "Jika suatu wilayah mengalami urbanisasi tinggi tanpa perencanaan, dampak yang paling mungkin terjadi adalah …", a: "Keseimbangan lingkungan meningkat", b: "Penurunan jumlah penduduk kota", c: "Munculnya permukiman kumuh", d: "Peningkatan kualitas udara", e: "Distribusi pendapatan merata", correct: "c" },
+            { q: "Konsep pembangunan berkelanjutan menekankan keseimbangan antara …", a: "Industri dan teknologi", b: "Ekonomi, sosial, dan lingkungan", c: "Pemerintah dan swasta", d: "Kota dan desa", e: "Produksi dan distribusi", correct: "b" },
+            { q: "Jika suatu daerah mengalami deforestasi besar-besaran, maka risiko yang meningkat adalah …", a: "Urbanisasi", b: "Longsor dan banjir", c: "Migrasi internasional", d: "Industrialisasi", e: "Kekeringan permanen", correct: "b" },
+            { q: "Perubahan penggunaan lahan dari hutan menjadi perkebunan sawit berdampak pada …", a: "Peningkatan keanekaragaman hayati", b: "Stabilitas ekosistem meningkat", c: "Penurunan biodiversitas", d: "Kualitas tanah meningkat", e: "Iklim lokal lebih stabil", correct: "c" },
+            { q: "Jika suatu negara terlalu bergantung pada ekspor sumber daya alam mentah, dampaknya adalah …", a: "Ekonomi stabil", b: "Ketergantungan global rendah", c: "Rentan terhadap fluktuasi harga dunia", d: "Industri berkembang pesat", e: "Kesejahteraan merata", correct: "c" },
+            { q: "Peningkatan suhu global dapat menyebabkan perubahan pola curah hujan yang berdampak pada …", a: "Stabilitas pertanian", b: "Produksi pangan meningkat", c: "Ketidakpastian hasil panen", d: "Penurunan evapotranspirasi", e: "Kesuburan tanah meningkat", correct: "c" },
+            { q: "Jika grafik menunjukkan peningkatan emisi karbon sejalan dengan industrialisasi, maka hubungan keduanya adalah …", a: "Tidak berkaitan", b: "Berbanding terbalik", c: "Berbanding lurus", d: "Acak", e: "Fluktuatif", correct: "c" },
+            { q: "Fenomena urban heat island ditandai dengan …", a: "Suhu desa lebih tinggi", b: "Kota lebih dingin dari desa", c: "Suhu kota lebih tinggi dibanding sekitarnya", d: "Tidak ada perbedaan suhu", e: "Suhu laut meningkat", correct: "c" },
+            { q: "Penyebab utama meningkatnya limbah plastik di laut adalah …", a: "Aktivitas pertanian", b: "Pengelolaan sampah yang buruk", c: "Aktivitas vulkanik", d: "Arus laut", e: "Angin muson", correct: "b" },
+            { q: "Jika suatu grafik menunjukkan penurunan luas hutan tiap tahun, maka kebijakan yang tepat adalah …", a: "Eksploitasi hutan", b: "Reboisasi dan konservasi", c: "Urbanisasi", d: "Industrialisasi", e: "Ekspor kayu", correct: "b" },
+            { q: "Migrasi dari desa ke kota biasanya didorong oleh faktor …", a: "Push factor saja", b: "Pull factor saja", c: "Kombinasi push dan pull factor", d: "Faktor budaya", e: "Faktor geografis", correct: "c" },
+            { q: "Jika tingkat pengangguran tinggi di kota, maka dampak sosial yang mungkin terjadi adalah …", a: "Stabilitas sosial meningkat", b: "Kriminalitas menurun", c: "Munculnya masalah sosial", d: "Urbanisasi menurun", e: "Pendidikan meningkat", correct: "c" },
+            { q: "Globalisasi memengaruhi budaya lokal dengan cara …", a: "Menghilangkan semua budaya lokal", b: "Memperkuat budaya tradisional", c: "Terjadi akulturasi budaya", d: "Menutup interaksi budaya", e: "Membatasi komunikasi", correct: "c" },
+            { q: "Jika suatu negara mengalami bonus demografi, maka peluang yang bisa dimanfaatkan adalah …", a: "Beban ekonomi meningkat", b: "Tenaga kerja produktif meningkat", c: "Pengangguran meningkat", d: "Urbanisasi menurun", e: "Pendapatan menurun", correct: "b" },
+            { q: "Ketimpangan pembangunan antar wilayah dapat diatasi dengan …", a: "Sentralisasi pembangunan", b: "Pemerataan pembangunan", c: "Industrialisasi kota saja", d: "Urbanisasi besar-besaran", e: "Ekspor sumber daya", correct: "b" },
+            { q: "Jika grafik menunjukkan peningkatan GDP tetapi ketimpangan tinggi, maka dapat disimpulkan …", a: "Semua masyarakat sejahtera", b: "Pembangunan merata", c: "Pertumbuhan tidak inklusif", d: "Ekonomi stagnan", e: "Tidak ada masalah", correct: "c" },
+            { q: "Perdagangan internasional memberikan manfaat berupa …", a: "Isolasi ekonomi", b: "Penurunan produksi", c: "Akses pasar global", d: "Pengangguran meningkat", e: "Ketergantungan penuh", correct: "c" },
+            { q: "Jika nilai tukar mata uang melemah, maka dampaknya adalah …", a: "Impor lebih murah", b: "Ekspor menurun", c: "Ekspor lebih kompetitif", d: "Harga barang turun", e: "Inflasi menurun", correct: "c" },
+            { q: "Salah satu dampak negatif globalisasi ekonomi adalah …", a: "Transfer teknologi", b: "Peningkatan investasi", c: "Ketergantungan ekonomi", d: "Akses pasar luas", e: "Pertumbuhan ekonomi", correct: "c" },
+            { q: "Jika suatu negara meningkatkan kualitas SDM, maka dampak jangka panjangnya adalah …", a: "Pengangguran meningkat", b: "Produktivitas menurun", c: "Daya saing meningkat", d: "Investasi menurun", e: "Ekonomi stagnan", correct: "c" },
+            { q: "Transportasi modern berpengaruh terhadap perubahan sosial berupa …", a: "Isolasi wilayah", b: "Mobilitas meningkat", c: "Interaksi menurun", d: "Tradisi menguat", e: "Teknologi menurun", correct: "b" },
+            { q: "Perubahan sosial yang berlangsung cepat disebut …", a: "Evolusi", b: "Revolusi", c: "Adaptasi", d: "Integrasi", e: "Asimilasi", correct: "b" },
+            { q: "Faktor pendorong perubahan sosial adalah …", a: "Tradisi kuat", b: "Sikap tertutup", c: "Kontak dengan budaya lain", d: "Isolasi wilayah", e: "Rendahnya pendidikan", correct: "c" },
+            { q: "Modernisasi ditandai dengan …", a: "Pola pikir tradisional", b: "Teknologi sederhana", c: "Rasional dan efisien", d: "Ketergantungan alam", e: "Budaya statis", correct: "c" },
+            { q: "Jika suatu masyarakat menolak perubahan, maka dampaknya adalah …", a: "Kemajuan cepat", b: "Stagnasi sosial", c: "Modernisasi", d: "Globalisasi", e: "Industrialisasi", correct: "b" },
+            { q: "Interaksi sosial yang menghasilkan budaya baru disebut …", a: "Konflik", b: "Asimilasi", c: "Disintegrasi", d: "Diferensiasi", e: "Stratifikasi", correct: "b" },
+            { q: "Salah satu dampak negatif modernisasi adalah …", a: "Efisiensi meningkat", b: "Individualisme", c: "Teknologi maju", d: "Produktivitas tinggi", e: "Pendidikan meningkat", correct: "b" },
+            { q: "Perubahan struktur ekonomi dari agraris ke industri disebut …", a: "Urbanisasi", b: "Industrialisasi", c: "Globalisasi", d: "Modernisasi", e: "Revolusi", correct: "b" },
+            { q: "Jika grafik menunjukkan penurunan tenaga kerja sektor pertanian, maka terjadi …", a: "Agrarisasi", b: "Industrialisasi", c: "Urbanisasi", d: "Globalisasi", e: "Revolusi", correct: "b" },
+            { q: "Salah satu indikator negara maju adalah …", a: "Tingkat kelahiran tinggi", b: "Pendapatan per kapita tinggi", c: "Ketergantungan tinggi", d: "Pengangguran tinggi", e: "Pendidikan rendah", correct: "b" },
+            { q: "Jika suatu negara memiliki HDI tinggi, maka menunjukkan …", a: "Kualitas hidup rendah", b: "Kesejahteraan tinggi", c: "Ketimpangan tinggi", d: "Ekonomi lemah", e: "Pendidikan rendah", correct: "b" },
+            { q: "Salah satu faktor yang memengaruhi pertumbuhan ekonomi adalah …", a: "Jumlah penduduk saja", b: "Teknologi dan investasi", c: "Cuaca", d: "Budaya", e: "Tradisi", correct: "b" },
+            { q: "Jika inflasi tinggi, maka daya beli masyarakat akan …", a: "Meningkat", b: "Stabil", c: "Menurun", d: "Tidak berubah", e: "Fluktuatif", correct: "c" },
+            { q: "Kegiatan distribusi bertujuan untuk …", a: "Menghasilkan barang", b: "Menyalurkan barang", c: "Mengonsumsi barang", d: "Menyimpan barang", e: "Mengolah barang", correct: "b" },
+            { q: "Jika suatu negara mengalami defisit perdagangan, berarti …", a: "Ekspor > impor", b: "Impor > ekspor", c: "Ekspor = impor", d: "Tidak ada perdagangan", e: "Semua benar", correct: "b" },
+            { q: "Salah satu peran pemerintah dalam ekonomi adalah …", a: "Konsumen saja", b: "Produsen saja", c: "Regulator", d: "Distributor", e: "Investor asing", correct: "c" },
+            { q: "Jika pajak dinaikkan, maka dampaknya adalah …", a: "Konsumsi meningkat", b: "Pendapatan negara meningkat", c: "Inflasi turun drastis", d: "Produksi meningkat", e: "Ekspor meningkat", correct: "b" },
+            { q: "Kegiatan konsumsi dipengaruhi oleh …", a: "Selera dan pendapatan", b: "Produksi", c: "Distribusi", d: "Teknologi", e: "Iklim", correct: "a" },
+            { q: "Jika suatu negara memiliki cadangan devisa tinggi, maka …", a: "Ekonomi lemah", b: "Stabilitas ekonomi kuat", c: "Ketergantungan tinggi", d: "Inflasi tinggi", e: "Pengangguran tinggi", correct: "b" },
+            { q: "Salah satu dampak negatif konsumsi berlebihan adalah …", a: "Hemat energi", b: "Lingkungan rusak", c: "Kesejahteraan meningkat", d: "Produksi efisien", e: "Distribusi lancar", correct: "b" },
+            { q: "Jika sumber daya alam terbatas, maka solusi terbaik adalah …", a: "Eksploitasi maksimal", b: "Konservasi dan efisiensi", c: "Konsumsi meningkat", d: "Produksi besar", e: "Impor terus", correct: "b" },
+            { q: "Ekonomi kreatif ditandai dengan …", a: "Mengandalkan SDA", b: "Berbasis ide dan inovasi", c: "Tenaga kerja rendah", d: "Teknologi rendah", e: "Produksi massal", correct: "b" },
+            { q: "Jika UMKM berkembang pesat, maka dampaknya adalah …", a: "Pengangguran meningkat", b: "Ekonomi lokal tumbuh", c: "Ketimpangan meningkat", d: "Impor meningkat", e: "Produksi turun", correct: "b" },
+            { q: "Digitalisasi ekonomi berdampak pada …", a: "Transaksi lebih lambat", b: "Akses pasar terbatas", c: "Efisiensi meningkat", d: "Biaya tinggi", e: "Produksi menurun", correct: "c" },
+            { q: "Jika suatu negara mengembangkan energi terbarukan, maka dampaknya adalah …", a: "Emisi meningkat", b: "Lingkungan lebih terjaga", c: "Ketergantungan fosil meningkat", d: "Biaya energi naik", e: "Produksi turun", correct: "b" },
+            { q: "Salah satu tantangan pembangunan berkelanjutan adalah …", a: "Ketersediaan teknologi", b: "Konflik kepentingan ekonomi dan lingkungan", c: "Sumber daya melimpah", d: "Penduduk sedikit", e: "Teknologi maju", correct: "b" },
+            { q: "Jika terjadi overfishing, maka dampaknya adalah …", a: "Produksi ikan meningkat", b: "Ekosistem laut terganggu", c: "Biodiversitas meningkat", d: "Nelayan sejahtera", e: "Laut stabil", correct: "b" },
+            { q: "Penggunaan teknologi ramah lingkungan bertujuan untuk …", a: "Meningkatkan polusi", b: "Menjaga keberlanjutan", c: "Mengurangi produksi", d: "Meningkatkan biaya", e: "Mengurangi efisiensi", correct: "b" },
+            { q: "Jika suatu kota menerapkan transportasi publik massal, maka dampaknya adalah …", a: "Kemacetan meningkat", b: "Polusi meningkat", c: "Emisi berkurang", d: "Konsumsi BBM naik", e: "Waktu tempuh meningkat", correct: "c" },
+            { q: "Indikator keberhasilan pembangunan berkelanjutan adalah …", a: "GDP tinggi saja", b: "Keseimbangan ekonomi, sosial, dan lingkungan", c: "Produksi tinggi", d: "Konsumsi tinggi", e: "Ekspor tinggi", correct: "b" }
+        ];
 
-        let currentCategory = "";
-        let currentQuestionIndex = 0;
-        let userAnswers = [];
-        let timerSeconds = 0;
-        let timerInterval;
+        let currentQuestion = 0;
+        let userAnswers = new Array(rawQuestions.length).fill(null);
+        let timeLeft = 7200; // 2 jam
 
+        // Inisialisasi
         function init() {
-            const list = document.getElementById('category-list');
-            list.innerHTML = '';
-            for (let key in quizData) {
-                const cat = quizData[key];
-                const card = document.createElement('div');
-                card.className = "category-card bg-white p-6 rounded-3xl shadow-md border border-slate-100 cursor-pointer hover:shadow-xl hover:border-blue-200 transition-all group";
-                card.onclick = () => startQuiz(key);
-                card.innerHTML = `
-                    <div class="bg-blue-50 w-14 h-14 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-blue-600 group-hover:text-white transition-colors text-blue-600">
-                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${cat.icon}"></path></svg>
-                    </div>
-                    <h3 class="text-lg font-bold text-slate-800">${cat.title}</h3>
-                    <p class="text-xs text-slate-400 mt-1 font-semibold uppercase tracking-tight">${cat.questions.length} Soal Master Puspresnas</p>
-                `;
-                list.appendChild(card);
-            }
-        }
-
-        function startQuiz(categoryKey) {
-            currentCategory = categoryKey;
-            currentQuestionIndex = 0;
-            userAnswers = [];
-            timerSeconds = 0;
-            document.getElementById('welcome-screen').classList.add('hidden');
-            document.getElementById('quiz-screen').classList.remove('hidden');
-            document.getElementById('active-category-indicator').classList.remove('hidden');
-            document.getElementById('active-category-indicator').innerText = quizData[categoryKey].title;
+            renderNav();
+            loadQuestion();
             startTimer();
-            showQuestion();
         }
 
-        function startTimer() {
-            if(timerInterval) clearInterval(timerInterval);
-            timerInterval = setInterval(() => {
-                timerSeconds++;
-                const m = Math.floor(timerSeconds / 60).toString().padStart(2, '0');
-                const s = (timerSeconds % 60).toString().padStart(2, '0');
-                document.getElementById('timer').innerText = `${m}:${s}`;
-            }, 1000);
+        function renderNav() {
+            const grid = document.getElementById('nav-grid');
+            grid.innerHTML = '';
+            rawQuestions.forEach((_, index) => {
+                const btn = document.createElement('div');
+                btn.innerText = index + 1;
+                btn.className = `question-nav-btn ${userAnswers[index] ? 'nav-answered' : 'nav-unanswered'}`;
+                if(index === currentQuestion) btn.classList.add('nav-current');
+                btn.onclick = () => jumpToQuestion(index);
+                grid.appendChild(btn);
+            });
         }
 
-        function showQuestion() {
-            const q = quizData[currentCategory].questions[currentQuestionIndex];
-            const total = quizData[currentCategory].questions.length;
-            document.getElementById('progress-text').innerText = `Soal ${currentQuestionIndex + 1} / ${total}`;
-            document.getElementById('question-text').innerText = q.tanya;
+        function loadQuestion() {
+            const q = rawQuestions[currentQuestion];
+            document.getElementById('question-number').innerText = `Soal No. ${currentQuestion + 1}`;
+            document.getElementById('question-text').innerText = q.q;
             
             const container = document.getElementById('options-container');
             container.innerHTML = '';
             
-            q.opsi.forEach((opt, idx) => {
-                const btn = document.createElement('button');
-                btn.className = "option-card w-full text-left p-5 rounded-2xl border-2 border-slate-100 hover:border-blue-200 hover:bg-blue-50 font-semibold text-slate-700 flex items-center gap-4 group";
-                btn.innerHTML = `
-                    <span class="w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-xl bg-slate-50 text-slate-400 font-black group-hover:bg-blue-600 group-hover:text-white transition-all">${String.fromCharCode(65 + idx)}</span>
-                    <span class="text-sm md:text-base">${opt}</span>
-                `;
-                btn.onclick = () => selectOption(idx);
-                container.appendChild(btn);
-            });
-            
-            document.getElementById('next-btn').disabled = true;
-            document.getElementById('next-btn').className = "bg-slate-200 text-slate-400 px-10 py-4 rounded-2xl font-black uppercase tracking-wider text-sm cursor-not-allowed transition-all";
-        }
-
-        function selectOption(idx) {
-            userAnswers[currentQuestionIndex] = idx;
-            const cards = document.querySelectorAll('.option-card');
-            cards.forEach((card, i) => {
-                const badge = card.querySelector('span:first-child');
-                if(i === idx) {
-                    card.classList.add('border-blue-600', 'bg-blue-50');
-                    badge.classList.add('bg-blue-600', 'text-white');
-                } else {
-                    card.classList.remove('border-blue-600', 'bg-blue-50');
-                    badge.classList.remove('bg-blue-600', 'text-white');
+            ['a', 'b', 'c', 'd', 'e'].forEach(opt => {
+                if(q[opt]) {
+                    const button = document.createElement('button');
+                    button.className = `w-full text-left p-4 rounded-xl border-2 transition ${userAnswers[currentQuestion] === opt ? 'border-blue-600 bg-blue-50' : 'border-gray-100 hover:border-blue-200'}`;
+                    button.innerHTML = `<span class="font-bold mr-2 uppercase">${opt}.</span> ${q[opt]}`;
+                    button.onclick = () => selectOption(opt);
+                    container.appendChild(button);
                 }
             });
-            
-            const nextBtn = document.getElementById('next-btn');
-            nextBtn.disabled = false;
-            nextBtn.className = "bg-blue-600 text-white px-10 py-4 rounded-2xl font-black uppercase tracking-wider text-sm hover:bg-blue-700 shadow-lg cursor-pointer transition-all";
-            nextBtn.innerText = currentQuestionIndex === quizData[currentCategory].questions.length - 1 ? "Selesaikan Latihan" : "Lanjut";
+            renderNav();
+        }
+
+        function selectOption(opt) {
+            userAnswers[currentQuestion] = opt;
+            loadQuestion();
         }
 
         function nextQuestion() {
-            if (currentQuestionIndex < quizData[currentCategory].questions.length - 1) {
-                currentQuestionIndex++;
-                showQuestion();
-            } else {
-                showResults();
+            if(currentQuestion < rawQuestions.length - 1) {
+                currentQuestion++;
+                loadQuestion();
             }
         }
 
-        function showResults() {
-            clearInterval(timerInterval);
-            document.getElementById('quiz-screen').classList.add('hidden');
-            document.getElementById('result-screen').classList.remove('hidden');
-            document.getElementById('active-category-indicator').classList.add('hidden');
-            
-            const questions = quizData[currentCategory].questions;
+        function prevQuestion() {
+            if(currentQuestion > 0) {
+                currentQuestion--;
+                loadQuestion();
+            }
+        }
+
+        function jumpToQuestion(index) {
+            currentQuestion = index;
+            loadQuestion();
+        }
+
+        function startTimer() {
+            const timerEl = document.getElementById('timer');
+            const interval = setInterval(() => {
+                if(timeLeft <= 0) {
+                    clearInterval(interval);
+                    finishExam();
+                    return;
+                }
+                timeLeft--;
+                const h = Math.floor(timeLeft / 3600);
+                const m = Math.floor((timeLeft % 3600) / 60);
+                const s = timeLeft % 60;
+                timerEl.innerText = `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+            }, 1000);
+        }
+
+        function finishExam() {
             let correct = 0;
-            const review = document.getElementById('review-section');
-            review.innerHTML = '';
-            
-            questions.forEach((q, i) => {
-                const isCorrect = userAnswers[i] === q.kunci;
-                if(isCorrect) correct++;
-                
-                const card = document.createElement('div');
-                card.className = `p-6 rounded-3xl border fade-in ${isCorrect ? 'bg-emerald-50 border-emerald-100' : 'bg-red-50 border-red-100'}`;
-                card.innerHTML = `
-                    <p class="font-bold text-slate-800 mb-3">${q.tanya}</p>
-                    <div class="text-sm mb-4">
-                        <div class="flex items-center gap-2 mb-1">
-                            <span class="font-bold text-slate-500">Pilihan:</span>
-                            <span class="${isCorrect ? 'text-emerald-700 font-bold' : 'text-red-700 font-bold'}">${q.opsi[userAnswers[i]] || 'Tidak Dijawab'}</span>
-                        </div>
-                        ${!isCorrect ? `
-                        <div class="flex items-center gap-2">
-                            <span class="font-bold text-slate-500">Kunci:</span>
-                            <span class="text-blue-700 font-bold italic">${q.opsi[q.kunci]}</span>
-                        </div>` : ''}
-                    </div>
-                    <div class="bg-white/60 p-4 rounded-xl text-xs text-slate-600 border border-slate-100 leading-relaxed">
-                        <strong class="uppercase text-[9px] tracking-widest text-slate-400 block mb-1">Analisis Geografi:</strong> ${q.bahas}
-                    </div>
-                `;
-                review.appendChild(card);
+            let wrong = 0;
+            let unanswered = 0;
+
+            userAnswers.forEach((ans, idx) => {
+                if(ans === null) unanswered++;
+                else if(ans === rawQuestions[idx].correct) correct++;
+                else wrong++;
             });
+
+            const score = (correct * 4) - (wrong * 1);
             
-            document.getElementById('final-score').innerText = Math.round((correct / questions.length) * 100);
-            document.getElementById('correct-count').innerText = `${correct}/${questions.length}`;
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            document.getElementById('res-correct').innerText = correct;
+            document.getElementById('res-wrong').innerText = wrong;
+            document.getElementById('res-score').innerText = `Skor: ${score}`;
+            document.getElementById('result-modal').style.display = 'flex';
         }
 
-        function confirmExit() { 
-            if(confirm("Yakin ingin keluar? Progres latihanmu akan hilang.")) location.reload(); 
-        }
-
-        init();
+        window.onload = init;
     </script>
 </body>
 </html>
